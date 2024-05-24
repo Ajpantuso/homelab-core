@@ -1,0 +1,11 @@
+[Unit]
+Description=Runs Ansible Pull
+Wants=ansible-pull.timer
+ConditionFileIsExecutable=/usr/bin/ansible-pull
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ansible-pull -U https://github.com/ajpantuso/homelab ansible/main.yaml
+
+[Install]
+WantedBy=multi-user.target

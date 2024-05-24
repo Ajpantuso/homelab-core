@@ -1,0 +1,11 @@
+---
+- name: Install additional packages
+  become: true
+  community.general.rpm_ostree_pkg:
+    name: '{{ item.pkg }}'
+    state: present
+  notify:
+  - Reboot Node
+  loop:
+  - pkg: tftp-server
+  - pkg: nginx

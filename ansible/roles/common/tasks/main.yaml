@@ -1,0 +1,11 @@
+---
+- import_tasks: coreos.yaml
+  when: '"fedora-coreos" in ansible_proc_cmdline.ostree'
+- name: Ensure 'labadm' user
+  become: true
+  ansible.builtin.user:
+    name: labadm
+    home: /home/labadm
+    groups:
+    - wheel
+    shell: /bin/bash

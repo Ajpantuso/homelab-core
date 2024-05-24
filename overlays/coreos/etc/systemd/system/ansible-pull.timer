@@ -1,0 +1,11 @@
+[Unit]
+Description=Ansible Pull Timer
+Requires=ansible-pull.service network.target network-online.target nss-lookup.target
+After=network.target network-online.target nss-lookup.target
+
+[Timer]
+Unit=ansible-pull.service
+OnCalendar=00/2:01:00
+
+[Install]
+WantedBy=timers.target

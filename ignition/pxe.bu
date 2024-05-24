@@ -1,0 +1,69 @@
+variant: fcos
+version: 1.5.0
+passwd:
+  users:
+  - name: labadm
+    ssh_authorized_keys_local:
+    - labadm.pub
+    home_dir: /home/labadm
+    groups:
+    - wheel
+    shell: /bin/bash
+  - name: nginx
+    system: true
+storage:
+  directories:
+  - path: /srv/www
+    user:
+      name: labadm
+    group:
+      name: labadm
+  files:
+  - path: /etc/zincati/config.d/51-rollout-wariness.toml
+    contents:
+      local: overlays/coreos/etc/zincati/config.d/51-rollout-wariness.toml
+  - path: /etc/zincati/config.d/55-updates-strategy.toml
+    contents:
+      local: overlays/coreos/etc/zincati/config.d/55-updates-strategy.toml
+  - path: /etc/sudoers.d/01_wheel
+    mode: 0440
+    contents:
+      local: overlays/coreos/etc/sudoers.d/01_wheel
+  - path: /etc/ansible/hosts
+    contents:
+      local: overlays/pxe/etc/ansible/hosts
+  - path: /etc/nginx/nginx.conf
+    contents:
+      local: overlays/pxe/etc/nginx/nginx.conf
+  - path: /var/lib/tftpboot/ipxe-x86_64.efi
+    contents:
+      local: overlays/pxe/var/lib/tftpboot/ipxe-x86_64.efi
+  - path: /var/lib/tftpboot/undionly.kpxe
+    contents:
+      local: overlays/pxe/var/lib/tftpboot/undionly.kpxe
+  - path: /var/lib/tftpboot/menu/boot.ipxe
+    contents:
+      local: overlays/pxe/var/lib/tftpboot/menu/boot.ipxe
+systemd:
+  units:
+  - name: rpm-ostree-install-extra.service
+    enabled: true
+    contents_local: overlays/pxe/etc/systemd/system/rpm-ostree-install-extra.service
+  - name: tftp.service
+    enabled: true
+    contents_local: overlays/pxe/etc/systemd/system/tftp.service
+  - name: tftp.socket
+    enabled: true
+    contents_local: overlays/pxe/etc/systemd/system/tftp.socket
+  - name: nginx-setup.service
+    enabled: true
+    contents_local: overlays/pxe/etc/systemd/system/nginx-setup.service
+  - name: nginx.service
+    enabled: true
+    contents_local: overlays/pxe/etc/systemd/system/nginx.service
+  - name: ansible-pull.service
+    enabled: true
+    contents_local: overlays/coreos/etc/systemd/system/ansible-pull.service
+  - name: ansible-pull.timer
+    enabled: true
+    contents_local: overlays/coreos/etc/systemd/system/ansible-pull.timer

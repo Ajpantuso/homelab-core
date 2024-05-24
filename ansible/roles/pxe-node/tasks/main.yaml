@@ -1,0 +1,49 @@
+---
+- import_tasks: coreos.yaml
+  when: '"fedora-coreos" in ansible_proc_cmdline.ostree'
+- name: Ensure 'nginx' user
+  become: true
+  ansible.builtin.user:
+    name: nginx
+    system: true
+- name: Ensure '/srv/www' directory
+  become: true
+  ansible.builtin.file:
+    path: /srv/www
+    state: directory
+    owner: labadm
+    group: labadm
+- name: Ensure configuration files
+  become: true
+  ansible.builtin.copy:
+    src:  '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '{{ item.mode }}'
+    state: present
+  loop:
+  - src: "{{ overlaysDir }}/pxe/etc/nginx/nginx.conf"
+    dest: /etc/nginx/nginx.conf
+    mode: 644
+  - src: "{{ overlaysDir }}/pxe/var/lib/tftpboot/menu/boot.ipxe"
+    dest: /var/lib/tftpboot/menu/boot.ipxe
+    mode: 644
+  - src: "{{ overlaysDir }}/pxe/etc/systemd/system/tftp.service"
+    dest: /etc/systemd/system/tftp.service
+    mode: 644
+  - src: "{{ overlaysDir }}/pxe/etc/systemd/system/tftp.socket"
+    dest: /etc/systemd/system/tftp.socket
+    mode: 644
+  - src: "{{ overlaysDir }}/pxe/etc/systemd/system/nginx.service"
+    dest: /etc/systemd/system/nginx.service
+    mode: 644
+- name: Enable systemd services
+  become: true
+  ansible.builtin.systemd_service:
+    name: "{{ item.name }}"
+    state: started
+    enabled: true
+    daemon_reload: true
+  loop:
+  - name: tftp.service
+  - name: tftp.socket
+  - name: nginx.service

@@ -1,0 +1,237 @@
+[tools]
+"go:github.com/coreos/butane/internal" = "v0.20.0"
+kustomize = "5.4.1"
+k0sctl = "0.17.7"
+"cargo:coreos-installer" = "latest"
+pre-commit = "latest"
+kubectl = "latest"
+"pipx:pykickstart" = "latest"
+"npm:mustache" = "latest"
+
+[env]
+# Tools
+CONTAINER_ENGINE="docker"
+DOWNLOAD_FROM_URL="{{ [config_root, 'hack', 'download_from_url.sh'] | join_path }}"
+
+# Directories
+CACHE_DIR="{{ [config_root, '.cache'] | join_path }}"
+DATA_DIR="{{ [env.CACHE_DIR, 'data'] | join_path }}"
+
+# K0SCTL
+K0SCTL_USERNAME="admin"
+K0SCTL_IDENTITY_PATH="{{ [config_root, '.ssh', 'id_rsa'] | join_path }}"
+K0SCTL_BASE_CONFIG_PATH="{{ [config_root, 'k0s', 'k0s.Cluster.yaml'] | join_path }}"
+K0SCTL_CONFIG_OUTPUT="{{ [env.CACHE_DIR, 'k0sctl', 'config.yaml'] | join_path }}"
+K0SCTL_KUBECONFIG="{{ [env.CACHE_DIR, '.kube', 'config'] | join_path }}"
+KUBECONFIG="{{ env.K0SCTL_KUBECONFIG }}"
+K0SCTL_HOSTS=""
+K0S_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s.bu'] | join_path }}"
+K0S_IGNITION_PATH="{{ [env.CACHE_DIR, 'ignition', 'k0s.ign'] | join_path }}"
+
+# CoreOS image builder
+COREOS_DEST_DEV="/dev/sda"
+COREOS_ISO_PATH=""
+COREOS_ISO_OUTPUT="out.iso"
+COREOS_VERSION="40.20240416.3.1"
+TARGET_SYSTEM_ARCH="x86_64"
+COREOS_DOWNLOAD_URL="https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/{{ env.COREOS_VERSION }}/{{ env.TARGET_SYSTEM_ARCH }}"
+COREOS_KERNEL_URL="{{ env.COREOS_DOWNLOAD_URL }}/fedora-coreos-{{ env.COREOS_VERSION }}-live-kernel-{{ env.TARGET_SYSTEM_ARCH }}"
+COREOS_INITRAMFS_URL="{{ env.COREOS_DOWNLOAD_URL }}/fedora-coreos-{{ env.COREOS_VERSION }}-live-initramfs.{{ env.TARGET_SYSTEM_ARCH }}.img"
+COREOS_ROOTFS_URL="{{ env.COREOS_DOWNLOAD_URL }}/fedora-coreos-{{ env.COREOS_VERSION }}-live-rootfs.{{ env.TARGET_SYSTEM_ARCH }}.img"
+
+# Fedora Server image builder
+FEDORA_VERSION="40"
+FEDORA_DOWNLOAD_URL="https://download.fedoraproject.org/pub/fedora/linux/releases/{{ env.FEDORA_VERSION }}/Server/x86_64/os/images/pxeboot"
+FEDORA_KERNEL_URL="{{ env.FEDORA_DOWNLOAD_URL }}/vmlinuz"
+FEDORA_INITRD_URL="{{ env.FEDORA_DOWNLOAD_URL }}/initrd.img"
+
+# ARM image builder
+ARM_INSTALL_RELEASE="40"
+ARM_INSTALL_DEVICE="/dev/sda"
+
+# PXE artifacts
+PXE_ROOT_DIR="{{ [env.DATA_DIR, 'os'] | join_path }}"
+PXE_COREOS_DIR="{{ [env.PXE_ROOT_DIR, 'fedora', 'coreos', env.COREOS_VERSION, env.TARGET_SYSTEM_ARCH] | join_path }}"
+PXE_FEDORA_DIR="{{ [env.PXE_ROOT_DIR, 'fedora', 'server', env.FEDORA_VERSION, env.TARGET_SYSTEM_ARCH] | join_path }}"
+K0S_KERNEL_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-live-kernel'] | join_path }}"
+K0S_INITRAMFS_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-live-initramfs.img'] | join_path }}"
+K0S_ROOTFS_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-live-rootfs.img'] | join_path }}"
+FEDORA_KERNEL_OUTPUT="{{ [env.PXE_FEDORA_DIR, 'vmlinuz'] | join_path }}"
+FEDORA_INITRD_OUTPUT="{{ [env.PXE_FEDORA_DIR, 'initrd.img'] | join_path }}"
+PXE_IGNITION_PATH="{{ [env.CACHE_DIR, 'ignition', 'pxe.ign'] | join_path }}"
+PXE_BUTANE_PATH="{{ [config_root, 'ignition', 'pxe.bu'] | join_path }}"
+
+# User Data
+LABADM_PASSWD=""
+LABADM_PUBLIC_KEY=""
+
+[tasks."k0s:apply"]
+run = "k0sctl apply -c ${K0SCTL_CONFIG_OUTPUT}"
+depends = ["generate:config"]
+
+[tasks."k0s:reset"]
+run = "k0sctl reset --force -c ${K0SCTL_CONFIG_OUTPUT}"
+depends = ["generate:config"]
+
+[tasks."k0s:config"]
+run = """
+    #! /usr/bin/env bash
+    mkdir -p $(dirname ${K0SCTL_KUBECONFIG})
+    k0sctl kubeconfig -c ${K0SCTL_CONFIG_OUTPUT} > ${K0SCTL_KUBECONFIG}
+    """
+
+[tasks."flux:apply"]
+run = "kubectl apply -k flux"
+
+[tasks."generate:config"]
+run = """
+    #! /usr/bin/env bash
+    mkdir -p $(dirname ${K0SCTL_CONFIG_OUTPUT})
+    kustomize build k0s > ${K0SCTL_CONFIG_OUTPUT}
+    """
+depends = ["generate:k0s"]
+
+[tasks."generate:k0s"]
+run = """
+    k0sctl init --k0s \
+        --user ${K0SCTL_USERNAME} \
+        -i ${K0SCTL_IDENTITY_PATH} \
+        ${K0SCTL_HOSTS} > ${K0SCTL_BASE_CONFIG_PATH}
+    """
+
+[tasks."apply:pxe"]
+run="scp -i ${K0SCTL_IDENTITY_PATH} -Cr ${PXE_ROOT_DIR} ${K0SCTL_USERNAME}@pxe:/srv/www"
+depends = [ "k0s:generate:pxe", "hypervisor:generate:pxe" ]
+
+[tasks."k0s:generate:pxe"]
+run = """
+    #!/usr/bin/env bash
+
+    mkdir -p ${PXE_COREOS_DIR}
+
+    "${DOWNLOAD_FROM_URL}" "${COREOS_KERNEL_URL}" "${K0S_KERNEL_OUTPUT}"
+    "${DOWNLOAD_FROM_URL}" "${COREOS_ROOTFS_URL}" "${K0S_ROOTFS_OUTPUT}"
+
+    if [ -f "${K0S_INITRAMFS_OUTPUT}" ]; then
+        rm "${K0S_INITRAMFS_OUTPUT}"
+    fi
+
+    coreos-installer pxe customize \
+        --dest-device "${COREOS_DEST_DEV}" \
+        --dest-ignition "${K0S_IGNITION_PATH}" \
+        --dest-console ttyS0,115200n8 \
+        --dest-console tty0 \
+        -o "${K0S_INITRAMFS_OUTPUT}" <(curl -sL ${COREOS_INITRAMFS_URL})
+
+    chmod 0644 "${K0S_INITRAMFS_OUTPUT}"
+    """
+depends = ["k0s:generate:ignition"]
+
+[tasks."hypervisor:generate:pxe"]
+run = """
+    mkdir -p "${PXE_FEDORA_DIR}"
+
+    mustache - "${root}/kickstart/hypervisor.mustache" "${PXE_FEDORA_DIR}/hypervisor.ks" << EOF
+    {
+        "install_device": "/dev/nvme0n1",
+        "labadm_key": "$(/usr/bin/cat ${LABADM_PUBLIC_KEY})",
+        "labadm_passwd": "${LABADM_PASSWD}"
+    }
+EOF
+
+    ksvalidator "${PXE_FEDORA_DIR}/hypervisor.ks"
+
+    "${DOWNLOAD_FROM_URL}" "${FEDORA_KERNEL_URL}" "${FEDORA_KERNEL_OUTPUT}"
+    "${DOWNLOAD_FROM_URL}" "${FEDORA_INITRD_URL}" "${FEDORA_INITRD_OUTPUT}"
+"""
+
+[tasks."pxe:arm:install"]
+run = """
+    sudo env PATH="${PATH}" coreos-installer install \
+        -a aarch64 -s stable \
+        -i ./.cache/ignition/pxe.ign \
+        --append-karg nomodeset "${ARM_INSTALL_DEVICE}"
+
+    tmp="$(mktemp -d)"
+    mkdir -p "${tmp}/boot/efi/"
+
+    sudo dnf install -y \
+        --downloadonly \
+        --forcearch=aarch64 \
+        --release="${ARM_INSTALL_RELEASE}" \
+        --destdir="${tmp}" \
+        uboot-images-armv8 bcm283x-firmware bcm283x-overlays
+
+    for rpm in "${tmp}"/*rpm; do
+        rpm2cpio "${rpm}" | cpio -idv -D "${tmp}"
+    done
+
+    mv "${tmp}/usr/share/uboot/rpi_arm64/u-boot.bin" \
+        "${tmp}/boot/efi/rpi-u-boot.bin"
+
+    part=$( \
+        lsblk "${ARM_INSTALL_DEVICE}" -J -oLABEL,PATH  | \
+        jq -r '.blockdevices[] | select(.label == "EFI-SYSTEM")'.path \
+    )
+
+    mnt="$(mktemp -d)"
+
+    mkdir "${mnt}"
+    sudo mount "${part}" "${mnt}"
+    sudo rsync -avh --ignore-existing "${tmp}/boot/efi/" "${mnt}"
+    sudo umount "${part}"
+
+    rm -rf ${tmp}
+    rm -rf ${mnt}
+"""
+depends = ["k0s:generate:ignition"]
+
+[tasks."k0s:generate:iso"]
+run = """
+    coreos-installer iso customize \
+        --dest-device ${COREOS_DEST_DEV} \
+        --dest-ignition ${K0S_IGNITION_PATH} \
+        --dest-console ttyS0,115200n8 \
+        --dest-console tty0 \
+        -o ${COREOS_ISO_OUTPUT} ${COREOS_ISO_PATH}
+    """
+depends = ["k0s:generate:ignition"]
+
+[tasks."k0s:generate:ignition"]
+run = """
+    #! /usr/bin/env bash
+    mkdir -p $(dirname ${K0S_IGNITION_PATH})
+    internal \
+    --pretty --strict \
+    --files-dir ${DATA_DIR} \
+    < ${K0S_BUTANE_PATH} \
+    > ${K0S_IGNITION_PATH}
+    """
+depends = ["common:pre-gen:ignition"]
+
+[tasks."pxe:generate:ignition"]
+run = """
+    #! /usr/bin/env bash
+    mkdir -p $(dirname ${PXE_IGNITION_PATH})
+    internal \
+    --pretty --strict \
+    --files-dir ${DATA_DIR} \
+    < ${PXE_BUTANE_PATH} \
+    > ${PXE_IGNITION_PATH}
+    """
+depends = ["common:pre-gen:ignition"]
+
+[tasks."common:pre-gen:ignition"]
+run = """
+    mkdir -p ${DATA_DIR}
+    cp ${LABADM_PUBLIC_KEY} ${DATA_DIR}/labadm.pub
+    cp -R overlays/ ${DATA_DIR}
+
+    ${CONTAINER_ENGINE} build -q -t ipxe -f - "${root}" << EOF
+        FROM registry.fedoraproject.org/fedora
+        RUN dnf install -y ipxe-bootimgs-x86 ipxe-bootimgs-aarch64
+        VOLUME /out
+        CMD ["sh", "-c", "cp /usr/share/ipxe/{undionly.kpxe,ipxe-x86_64.efi,ipxe-i386.efi} /out"]
+EOF
+    ${CONTAINER_ENGINE} run --rm -v ${DATA_DIR}/overlays/pxe/var/lib/tftpboot:/out:z localhost/ipxe
+"""

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+spec:
+  selector:
+  template:
+    spec:
+      containers:
+      - name: web
+        image: web
+        volumeMounts:
+        - name: data
+          mountPath: /opt/meshcentral/meshcentral-data
+        - name: config
+          mountPath: /opt/meshcentral/meshcentral-data/config.json
+          subPath: config.json
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - name: https
+          containerPort: 443
+        - name: bio
+          containerPort: 4433
+        livenessProbe:
+          httpGet:
+            path: /health.ashx
+            scheme: HTTPS
+            port: https
+          initialDelaySeconds: 3
+        readinessProbe:
+          httpGet:
+            path: /health.ashx
+            scheme: HTTPS
+            port: https
+          initialDelaySeconds: 3
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+      volumes:
+      - name: config
+        configMap:
+          name: meshcentral-web
+      - name: data
+        persistentVolumeClaim:
+          claimName: web
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
