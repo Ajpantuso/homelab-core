@@ -25,6 +25,7 @@ K0SCTL_CONFIG_OUTPUT="{{ [env.CACHE_DIR, 'k0sctl', 'config.yaml'] | join_path }}
 K0SCTL_KUBECONFIG="{{ [env.CACHE_DIR, '.kube', 'config'] | join_path }}"
 KUBECONFIG="{{ env.K0SCTL_KUBECONFIG }}"
 K0SCTL_HOSTS=""
+K0SCTL_CLUSTER_NAME="infra"
 K0S_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s.bu'] | join_path }}"
 K0S_IGNITION_PATH="{{ [env.CACHE_DIR, 'ignition', 'k0s.ign'] | join_path }}"
 
@@ -96,6 +97,7 @@ run = """
     k0sctl init --k0s \
         --user ${K0SCTL_USERNAME} \
         -i ${K0SCTL_IDENTITY_PATH} \
+        --cluster-name "${K0SCTL_CLUSTER_NAME}" \
         ${K0SCTL_HOSTS} > ${K0SCTL_BASE_CONFIG_PATH}
     """
 
