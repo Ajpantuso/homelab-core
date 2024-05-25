@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tftp
+spec:
+  selector:
+  template:
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: pxe
+      hostNetwork: true
+      containers:
+      - name: tftp
+        image: tftp
+        volumeMounts:
+        - name: tftp
+          mountPath: /var/lib/tftpboot
+        - name: config
+          mountPath: /etc/dnsmasq.conf
+          subPath: dnsmasq.conf
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+        ports:
+        - name: tftp
+          protocol: UDP
+          containerPort: 69
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+      - name: tftp
+        persistentVolumeClaim:
+          claimName: tftp
+      - name: config
+        configMap:
+          name: tftp

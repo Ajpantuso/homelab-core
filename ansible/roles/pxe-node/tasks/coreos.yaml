@@ -7,5 +7,4 @@
   notify:
   - Reboot Node
   loop:
-  - pkg: tftp-server
   - pkg: nginx

@@ -49,12 +49,6 @@ systemd:
   - name: rpm-ostree-install-extra.service
     enabled: true
     contents_local: overlays/pxe/etc/systemd/system/rpm-ostree-install-extra.service
-  - name: tftp.service
-    enabled: true
-    contents_local: overlays/pxe/etc/systemd/system/tftp.service
-  - name: tftp.socket
-    enabled: true
-    contents_local: overlays/pxe/etc/systemd/system/tftp.socket
   - name: nginx-setup.service
     enabled: true
     contents_local: overlays/pxe/etc/systemd/system/nginx-setup.service

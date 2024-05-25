@@ -27,12 +27,6 @@
   - src: "{{ overlaysDir }}/pxe/var/lib/tftpboot/menu/boot.ipxe"
     dest: /var/lib/tftpboot/menu/boot.ipxe
     mode: 644
-  - src: "{{ overlaysDir }}/pxe/etc/systemd/system/tftp.service"
-    dest: /etc/systemd/system/tftp.service
-    mode: 644
-  - src: "{{ overlaysDir }}/pxe/etc/systemd/system/tftp.socket"
-    dest: /etc/systemd/system/tftp.socket
-    mode: 644
   - src: "{{ overlaysDir }}/pxe/etc/systemd/system/nginx.service"
     dest: /etc/systemd/system/nginx.service
     mode: 644
@@ -44,6 +38,4 @@
     enabled: true
     daemon_reload: true
   loop:
-  - name: tftp.service
-  - name: tftp.socket
   - name: nginx.service

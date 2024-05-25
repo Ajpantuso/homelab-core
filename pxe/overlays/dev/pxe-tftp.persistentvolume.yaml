@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pxe-tftp
+spec:
+  volumeMode: Filesystem
+  storageClassName: local
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /var/lib/tftpboot
+    type: Directory
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: pxe
+    name: pxe-tftp
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - pxe
