@@ -1,9 +1,9 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: homelab
+  name: homelab-infra
 spec:
   interval: 5m
-  url: https://github.com/ajpantuso/homelab
+  url: https://github.com/ajpantuso/homelab-infra
   ref:
     branch: main

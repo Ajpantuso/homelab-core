@@ -9,8 +9,6 @@ spec:
         extensions:
           helm:
             repositories:
-            - name: openebs-internal
-              url: https://openebs.github.io/charts
             - name: metallb
               url: https://metallb.github.io/metallb
             - name: traefik
@@ -18,16 +16,6 @@ spec:
             - name: fluxcd-community
               url: https://fluxcd-community.github.io/helm-charts
             charts:
-            - name: openebs
-              chartname: openebs-internal/openebs
-              version: "3.9.0"
-              namespace: openebs-system
-              order: 1
-              values: |
-                localprovisioner:
-                  hostpathClass:
-                    enabled: true
-                    isDefaultClass: true
             - name: flux2
               chartname: fluxcd-community/flux2
               order: 2

@@ -49,8 +49,7 @@ spec:
         configMap:
           name: meshcentral-web
       - name: data
-        persistentVolumeClaim:
-          claimName: web
+        hostPath: /srv/meshcentral/web/data
       securityContext:
         seccompProfile:
           type: RuntimeDefault
