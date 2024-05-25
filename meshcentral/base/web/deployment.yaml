@@ -49,7 +49,9 @@ spec:
         configMap:
           name: meshcentral-web
       - name: data
-        hostPath: /srv/meshcentral/web/data
+        hostPath:
+          path: /srv/meshcentral/web/data
+          type: DirectoryOrCreate
       securityContext:
         seccompProfile:
           type: RuntimeDefault
