@@ -91,31 +91,22 @@ install \
     <(cat << EOF
     [Unit]
     Description=Runs Ansible Pull
-    Wants=ansible-pull.timer
     ConditionFileIsExecutable=/usr/bin/ansible-pull
 
     [Service]
     Type=oneshot
     ExecStart=/usr/bin/ansible-pull -U https://github.com/ajpantuso/homelab-infra ansible/main.yaml
-
-    [Install]
-    WantedBy=multi-user.target
 EOF
     ) /etc/systemd/system/ansible-pull.service
-
-systemctl daemon-reload
-systemctl enable --now ansible-pull.service
 
 install \
     -o root -g root -m644 \
     <(cat << EOF
     [Unit]
     Description=Ansible Pull Timer
-    Requires=ansible-pull.service network.target network-online.target nss-lookup.target
     After=network.target network-online.target nss-lookup.target
 
     [Timer]
-    Unit=ansible-pull.service
     OnCalendar=00/2:01:00
 
     [Install]
@@ -125,6 +116,35 @@ EOF
 
 systemctl daemon-reload
 systemctl enable --now ansible-pull.timer
+
+install \
+    -o root -g root -m644 \
+    <(cat << EOF
+    [Unit]
+    Description=Scheduled Reboot
+
+    [Service]
+    Type=oneshot
+    ExecStart=/usr/bin/systemctl --force reboot
+EOF
+    ) /etc/systemd/system/scheduled-reboot.service
+
+install \
+    -o root -g root -m644 \
+    <(cat << EOF
+    [Unit]
+    Description=Schedules reboot
+
+    [Timer]
+    OnCalendar=*-*-* 03:30:00
+
+    [Install]
+    WantedBy=timers.target
+EOF
+    ) /etc/systemd/system/scheduled-reboot.timer
+
+systemctl daemon-reload
+systemctl enable --now scheduled-reboot.timer
 %end
 
 # Reboot After Installation

@@ -62,8 +62,14 @@ systemd:
     enabled: true
     contents_local: overlays/pxe/etc/systemd/system/nginx.service
   - name: ansible-pull.service
-    enabled: true
+    enabled: false 
     contents_local: overlays/coreos/etc/systemd/system/ansible-pull.service
   - name: ansible-pull.timer
     enabled: true
     contents_local: overlays/coreos/etc/systemd/system/ansible-pull.timer
+  - name: scheduled-reboot.service
+    enabled: false
+    contents_local: overlays/coreos/etc/systemd/system/scheduled-reboot.service
+  - name: scheduled-reboot.timer
+    enabled: true
+    contents_local: overlays/coreos/etc/systemd/system/scheduled-reboot.timer

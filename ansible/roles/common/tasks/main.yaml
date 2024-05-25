@@ -9,3 +9,26 @@
     groups:
     - wheel
     shell: /bin/bash
+- name: Ensure configuration files
+  become: true
+  ansible.builtin.copy:
+    src:  '{{ item.src }}'
+    dest: '{{ item.dest }}'
+    mode: '{{ item.mode }}'
+    state: present
+  loop:
+  - src: "{{ overlaysDir }}/coreos/etc/systemd/system/scheduled-reboot.service"
+    dest: /etc/systemd/system/scheduled-reboot.service
+    mode: 644
+  - src: "{{ overlaysDir }}/coreos/etc/systemd/system/scheduled-reboot.timer"
+    dest: /etc/systemd/system/scheduled-reboot.timer
+    mode: 644
+- name: Enable systemd services
+  become: true
+  ansible.builtin.systemd_service:
+    name: "{{ item.name }}"
+    state: started
+    enabled: true
+    daemon_reload: true
+  loop:
+  - name: scheduled-reboot.timer
