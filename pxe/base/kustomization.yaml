@@ -6,3 +6,4 @@ labels:
     app.kubernetes.io/name: pxe
 resources:
 - ./tftp
+- ./web

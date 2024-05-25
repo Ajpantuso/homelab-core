@@ -5,4 +5,7 @@ resources:
 - ../../base
 - ./namespace.yaml
 - ./pxe-tftp.persistentvolume.yaml
+- ./pxe-web.persistentvolume.yaml
 - ./storageclass.yaml
+patches:
+- path: ./service.patch.yaml

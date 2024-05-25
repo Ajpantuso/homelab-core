@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pxe-web
+spec:
+  volumeMode: Filesystem
+  storageClassName: local
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  hostPath:
+    path: /srv/www
+    type: Directory
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: pxe
+    name: pxe-web
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - pxe

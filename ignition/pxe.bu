@@ -9,8 +9,6 @@ passwd:
     groups:
     - wheel
     shell: /bin/bash
-  - name: nginx
-    system: true
 storage:
   directories:
   - path: /srv/www
@@ -32,9 +30,6 @@ storage:
   - path: /etc/ansible/hosts
     contents:
       local: overlays/pxe/etc/ansible/hosts
-  - path: /etc/nginx/nginx.conf
-    contents:
-      local: overlays/pxe/etc/nginx/nginx.conf
   - path: /var/lib/tftpboot/ipxe-x86_64.efi
     contents:
       local: overlays/pxe/var/lib/tftpboot/ipxe-x86_64.efi
@@ -52,9 +47,6 @@ systemd:
   - name: nginx-setup.service
     enabled: true
     contents_local: overlays/pxe/etc/systemd/system/nginx-setup.service
-  - name: nginx.service
-    enabled: true
-    contents_local: overlays/pxe/etc/systemd/system/nginx.service
   - name: ansible-pull.service
     enabled: false 
     contents_local: overlays/coreos/etc/systemd/system/ansible-pull.service
