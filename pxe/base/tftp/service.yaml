@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: tftp
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
   - name: tftp
     port: 69
