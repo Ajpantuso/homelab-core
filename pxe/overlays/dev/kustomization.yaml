@@ -8,4 +8,5 @@ resources:
 - ./pxe-web.persistentvolume.yaml
 - ./storageclass.yaml
 patches:
-- path: ./service.patch.yaml
+- path: ./tftp.service.patch.yaml
+- path: ./web.service.patch.yaml

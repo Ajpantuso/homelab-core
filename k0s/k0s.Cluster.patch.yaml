@@ -11,17 +11,15 @@ spec:
             repositories:
             - name: metallb
               url: https://metallb.github.io/metallb
-            - name: traefik
-              url: https://traefik.github.io/charts
             - name: fluxcd-community
               url: https://fluxcd-community.github.io/helm-charts
             charts:
+            - name: metallb
+              chartname: metallb/metallb
+              namespace: metallb-system
+              order: 1
             - name: flux2
               chartname: fluxcd-community/flux2
               order: 2
               version: "2.12.4"
               namespace: flux-system
-            - name: metallb
-              chartname: metallb/metallb
-              namespace: metallb-system
-              order: 3
