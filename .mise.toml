@@ -26,8 +26,8 @@ K0SCTL_KUBECONFIG="{{ [env.CACHE_DIR, '.kube', 'config'] | join_path }}"
 KUBECONFIG="{{ env.K0SCTL_KUBECONFIG }}"
 K0SCTL_HOSTS=""
 K0SCTL_CLUSTER_NAME="infra"
-K0S_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s.bu'] | join_path }}"
-K0S_IGNITION_PATH="{{ [env.CACHE_DIR, 'ignition', 'k0s.ign'] | join_path }}"
+K0S_BM_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s-bm.bu'] | join_path }}"
+K0S_VM_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s-vm.bu'] | join_path }}"
 
 # CoreOS image builder
 COREOS_DEST_DEV="/dev/sda"
@@ -54,6 +54,8 @@ ARM_INSTALL_DEVICE="/dev/sda"
 PXE_ROOT_DIR="{{ [env.DATA_DIR, 'os'] | join_path }}"
 PXE_COREOS_DIR="{{ [env.PXE_ROOT_DIR, 'fedora', 'coreos', env.COREOS_VERSION, env.TARGET_SYSTEM_ARCH] | join_path }}"
 PXE_FEDORA_DIR="{{ [env.PXE_ROOT_DIR, 'fedora', 'server', env.FEDORA_VERSION, env.TARGET_SYSTEM_ARCH] | join_path }}"
+K0S_BM_IGNITION_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-bm.ign'] | join_path }}"
+K0S_VM_IGNITION_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-vm.ign'] | join_path }}"
 K0S_KERNEL_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-live-kernel'] | join_path }}"
 K0S_INITRAMFS_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-live-initramfs.img'] | join_path }}"
 K0S_ROOTFS_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-live-rootfs.img'] | join_path }}"
@@ -119,8 +121,6 @@ run = """
     fi
 
     coreos-installer pxe customize \
-        --dest-device "${COREOS_DEST_DEV}" \
-        --dest-ignition "${K0S_IGNITION_PATH}" \
         --dest-console ttyS0,115200n8 \
         --dest-console tty0 \
         -o "${K0S_INITRAMFS_OUTPUT}" <(curl -sL ${COREOS_INITRAMFS_URL})
@@ -186,13 +186,13 @@ run = """
     rm -rf ${tmp}
     rm -rf ${mnt}
 """
-depends = ["k0s:generate:ignition"]
+depends = ["pxe:generate:ignition"]
 
 [tasks."k0s:generate:iso"]
 run = """
     coreos-installer iso customize \
         --dest-device ${COREOS_DEST_DEV} \
-        --dest-ignition ${K0S_IGNITION_PATH} \
+        --dest-ignition ${K0S_BM_IGNITION_OUTPUT} \
         --dest-console ttyS0,115200n8 \
         --dest-console tty0 \
         -o ${COREOS_ISO_OUTPUT} ${COREOS_ISO_PATH}
@@ -202,12 +202,19 @@ depends = ["k0s:generate:ignition"]
 [tasks."k0s:generate:ignition"]
 run = """
     #! /usr/bin/env bash
-    mkdir -p $(dirname ${K0S_IGNITION_PATH})
+    mkdir -p $(dirname ${K0S_BM_IGNITION_OUTPUT})
     internal \
     --pretty --strict \
     --files-dir ${DATA_DIR} \
-    < ${K0S_BUTANE_PATH} \
-    > ${K0S_IGNITION_PATH}
+    < ${K0S_BM_BUTANE_PATH} \
+    > ${K0S_BM_IGNITION_OUTPUT}
+
+    mkdir -p $(dirname ${K0S_VM_IGNITION_OUTPUT})
+    internal \
+    --pretty --strict \
+    --files-dir ${DATA_DIR} \
+    < ${K0S_VM_BUTANE_PATH} \
+    > ${K0S_VM_IGNITION_OUTPUT}
     """
 depends = ["common:pre-gen:ignition"]
 
