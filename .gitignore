@@ -1,3 +1,4 @@
 .mise.local.toml
 k0s/k0s.Cluster.yaml
 .cache
+coreos.iso
