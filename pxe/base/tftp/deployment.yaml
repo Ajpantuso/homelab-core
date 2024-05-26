@@ -8,7 +8,6 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: pxe
-      hostNetwork: true
       containers:
       - name: tftp
         image: tftp
