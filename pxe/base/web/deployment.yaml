@@ -7,8 +7,6 @@ spec:
   template:
     metadata:
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: pxe
       containers:
       - name: web
         image: web

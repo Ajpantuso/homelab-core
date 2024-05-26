@@ -6,8 +6,6 @@ spec:
   selector:
   template:
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: pxe
       containers:
       - name: tftp
         image: tftp
