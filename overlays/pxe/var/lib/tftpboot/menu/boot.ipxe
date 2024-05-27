@@ -27,7 +27,7 @@ boot
 
 :fedora-server40-hypervisor-net
 set BASEURL http://pxe.ajphome.com/os/fedora/server/40/x86_64
-kernel ${BASEURL}/vmlinuz initrd=main inst.repo=https://download.fedoraproject.org/pub/fedora/linux/releases/40/Everything/x86_64/os/ ip=dhcp inst.ks=${BASEURL}/hypervisor.ks 
+kernel ${BASEURL}/vmlinuz initrd=main inst.repo=https://download.fedoraproject.org/pub/fedora/linux/releases/40/Everything/x86_64/os/ ip=dhcp inst.ks=${BASEURL}/hypervisor.ks
 initrd --name main ${BASEURL}/initrd.img
 boot
 

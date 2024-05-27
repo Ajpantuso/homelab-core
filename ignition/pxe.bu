@@ -48,7 +48,7 @@ systemd:
     enabled: true
     contents_local: overlays/pxe/etc/systemd/system/nginx-setup.service
   - name: ansible-pull.service
-    enabled: false 
+    enabled: false
     contents_local: overlays/coreos/etc/systemd/system/ansible-pull.service
   - name: ansible-pull.timer
     enabled: true
