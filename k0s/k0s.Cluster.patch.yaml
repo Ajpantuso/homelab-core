@@ -9,17 +9,11 @@ spec:
         extensions:
           helm:
             repositories:
-            - name: metallb
-              url: https://metallb.github.io/metallb
             - name: fluxcd-community
               url: https://fluxcd-community.github.io/helm-charts
             charts:
-            - name: metallb
-              chartname: metallb/metallb
-              namespace: metallb-system
-              order: 1
             - name: flux2
               chartname: fluxcd-community/flux2
-              order: 2
+              order: 1
               version: "2.12.4"
               namespace: flux-system
