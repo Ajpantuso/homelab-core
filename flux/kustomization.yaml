@@ -4,6 +4,7 @@ namespace: flux-system
 resources:
 - homelab-infra.gitrepository.yaml
 - metallb.helmrepository.yaml
+- metallb.helmrelease.yaml
 - metallb.kustomization.yaml
 - meshcentral.kustomization.yaml
 - pxe.kustomization.yaml

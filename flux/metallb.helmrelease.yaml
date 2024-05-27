@@ -3,11 +3,13 @@ kind: HelmRelease
 metadata:
   name: metallb
 spec:
+  targetNamespace: metallb-system
+  install:
+    createNamespace: true
   chart:
     spec:
       chart: metallb
       sourceRef:
         kind: HelmRepository
         name: metalllb
-        namespace: flux-system
   interval: 10m
