@@ -15,7 +15,6 @@
     src:  '{{ item.src }}'
     dest: '{{ item.dest }}'
     mode: '{{ item.mode }}'
-    state: present
   loop:
   - src: "{{ overlaysDir }}/coreos/etc/systemd/system/scheduled-reboot.service"
     dest: /etc/systemd/system/scheduled-reboot.service
