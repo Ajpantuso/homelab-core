@@ -8,3 +8,5 @@ resources:
 - metallb.kustomization.yaml
 - meshcentral.kustomization.yaml
 - pxe.kustomization.yaml
+- bitnami.helmrepository.yaml
+- external-dns.helmrelease.yaml

@@ -4,3 +4,4 @@ metadata:
   name: web
   annotations:
     metallb.universe.tf/loadBalancerIPs: 10.0.0.201
+    external-dns.alpha.kubernetes.io/hostname: meshcentral.ajphome.com.
