@@ -4,7 +4,7 @@ namespace: meshcentral
 resources:
 - ../../base
 - ./namespace.yaml
-- ./pxe-tftp.persistentvolume.yaml
+- ./meshcentral-web.persistentvolume.yaml
 patches:
 - path: ./service.patch.yaml
 - path: ./web.deployment.patch.yaml
