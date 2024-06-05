@@ -1,3 +1,0 @@
----
-- name: Reboot Node
-  ansible.builtin.command: systemctl reboot --force

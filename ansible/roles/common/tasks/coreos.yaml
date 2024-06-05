@@ -4,8 +4,6 @@
   community.general.rpm_ostree_pkg:
     name: udisks2
     state: present
-  notify:
-  - Reboot Node
 - name: Ensure configuration files
   become: true
   ansible.builtin.copy:
