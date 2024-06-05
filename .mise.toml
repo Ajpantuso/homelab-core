@@ -69,6 +69,19 @@ PXE_BUTANE_PATH="{{ [config_root, 'ignition', 'pxe.bu'] | join_path }}"
 LABADM_PASSWD=""
 LABADM_PUBLIC_KEY=""
 
+# DNS
+DNS_RECORDS_INPUT=""
+DNS_RECORDS_TEMPLATE="{{ [config_root, 'external-dns', 'dnsendpoints.mustache'] | join_path }}"
+DNS_RECORDS_DIR="{{ [config_root, 'external-dns'] | join_path }}"
+
+[tasks."apply:dns"]
+run = """
+    #!/usr/bin/env bash
+
+    mustache "${DNS_RECORDS_INPUT}" "${DNS_RECORDS_TEMPLATE}" "${DNS_RECORDS_DIR}/endpoints.yaml"
+    kubectl apply -k "${DNS_RECORDS_DIR}"
+"""
+
 [tasks."k0s:apply"]
 run = "k0sctl apply -c ${K0SCTL_CONFIG_OUTPUT}"
 depends = ["generate:config"]

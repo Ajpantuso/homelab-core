@@ -10,44 +10,54 @@ spec:
   chart:
     spec:
       chart: external-dns
-      version: "v7.5.*"
+      version: "1.14.*"
       sourceRef:
         kind: HelmRepository
-        name: bitnami
+        name: external-dns
   values:
-    provider: webhook
     registry: noop
-    extraArgs:
-      webhook-provider-url: http://localhost:8800
-    managedRecordTypesFilters:
-    - A
-    - AAAA
     sources:
-    - pod
+    - crd
     - service
-    sidecars:
-    - name: opnsense-unbound-external-dns-webhook
-      image: ghcr.io/jobs62/opnsense_unbound_external-dns_webhook:v0.2.0-rc1
-      ports:
-      - containerPort: 8800
-        name: http
-      env:
-      - name: OPNSENSE_BASE
-        valueFrom:
-          configMapKeyRef:
-            name: opnsense
-            key: base
-      - name: OPNSENSE_ALLOW_INVALID_CERTS
-        value: "true"
-      - name: OPNSENSE_DOMAIN_FILTERS
-        value: "[\".ajphome.com\"]"
-      - name: OPNSENSE_KEY
-        valueFrom:
-          secretKeyRef:
-            name: opnsense
-            key: key
-      - name: OPNSENSE_SECRET
-        valueFrom:
-          secretKeyRef:
-            name: opnsense
-            key: secret
+    - ingress
+    extraArgs:
+    - --managed-record-types=A
+    - --managed-record-types=AAAA
+    image:
+      pullPolicy: Always
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: quay.io/ajpantuso/opnsense_unbound_external-dns_webhook
+          tag: latest
+        securityContext:
+          runAsNonRoot: false
+        env:
+        - name: OPNSENSE_BIND
+          value: "0.0.0.0:8888"
+        - name: OPNSENSE_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: opnsense
+              key: base
+        - name: OPNSENSE_ALLOW_INVALID_CERTS
+          valueFrom:
+            configMapKeyRef:
+              name: opnsense
+              key: allowInvalidCerts
+        - name: OPNSENSE_DOMAIN_FILTERS
+          valueFrom:
+            configMapKeyRef:
+              name: opnsense
+              key: domainFilters
+        - name: OPNSENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: opnsense
+              key: key
+        - name: OPNSENSE_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: opnsense
+              key: secret
