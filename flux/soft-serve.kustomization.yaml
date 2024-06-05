@@ -1,0 +1,12 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: soft-serve
+spec:
+  interval: 5m0s
+  path: ./soft-serve/overlays/dev
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-infra
+  targetNamespace: soft-serve

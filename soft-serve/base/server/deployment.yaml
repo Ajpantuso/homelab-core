@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  selector:
+  template:
+    spec:
+      containers:
+      - name: server
+        image: server
+        env:
+        - name: SOFT_SERVE_INITIAL_ADMIN_KEYS
+          valueFrom:
+            secretKeyRef:
+              name: soft-serve
+              key: adminPublicKey
+        volumeMounts:
+        - name: soft-serve
+          mountPath: /soft-serve
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        ports:
+        - name: ssh
+          containerPort: 23231
+        - name: http
+          containerPort: 23232
+        - name: stats
+          containerPort: 23233
+        - name: git-daemon
+          containerPort: 9418
+        livenessProbe:
+          tcpSocket:
+            port: ssh
+          initialDelaySeconds: 3
+        readinessProbe:
+          tcpSocket:
+            port: ssh
+          initialDelaySeconds: 3
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+      volumes:
+      - name: soft-serve
+        persistentVolumeClaim:
+          claimName: data
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
