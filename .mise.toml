@@ -96,6 +96,7 @@ run = """
     mkdir -p $(dirname ${K0SCTL_KUBECONFIG})
     install -m 0600 <(k0sctl kubeconfig -c ${K0SCTL_CONFIG_OUTPUT}) ${K0SCTL_KUBECONFIG}
     """
+depends = ["generate:config"]
 
 [tasks."flux:apply"]
 run = "kubectl apply -k flux"
