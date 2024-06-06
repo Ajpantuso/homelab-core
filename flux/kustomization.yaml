@@ -10,3 +10,5 @@ resources:
 - pxe.kustomization.yaml
 - external-dns.helmrepository.yaml
 - external-dns.helmrelease.yaml
+- core-data.gitrepository.yaml
+- dns.kustomization.yaml

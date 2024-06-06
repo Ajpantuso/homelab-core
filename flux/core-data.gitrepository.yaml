@@ -1,0 +1,9 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: core-data
+spec:
+  interval: 5m
+  url: http://soft-serve.ajphome.com/core-data
+  ref:
+    branch: main
