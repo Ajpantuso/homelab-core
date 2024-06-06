@@ -94,7 +94,7 @@ depends = ["generate:config"]
 run = """
     #! /usr/bin/env bash
     mkdir -p $(dirname ${K0SCTL_KUBECONFIG})
-    k0sctl kubeconfig -c ${K0SCTL_CONFIG_OUTPUT} > ${K0SCTL_KUBECONFIG}
+    install -m 0600 <(k0sctl kubeconfig -c ${K0SCTL_CONFIG_OUTPUT}) ${K0SCTL_KUBECONFIG}
     """
 
 [tasks."flux:apply"]
