@@ -1,5 +1,11 @@
 # TODO
 
+- Add certificates for:
+  - MeshCentral
+  - pxe
+  - soft-serve
+    - mount config.yaml with TLS paths and `https` url
+    - mount tls key and server cert at paths
 - Deploy Vault
 - Manage CA and SSH certs with Vault
 - Integrate cert-manager with Vault as external-issuer
