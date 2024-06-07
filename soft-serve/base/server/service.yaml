@@ -8,9 +8,9 @@ spec:
   - name: ssh
     port: 22
     targetPort: ssh
-  - name: http
-    port: 80
-    targetPort: http
+  - name: https
+    port: 443
+    targetPort: https
   - name: stats
     port: 8080
     targetPort: stats

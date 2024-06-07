@@ -30,7 +30,7 @@ spec:
         ports:
         - name: ssh
           containerPort: 23231
-        - name: http
+        - name: https
           containerPort: 23232
         - name: stats
           containerPort: 23233
