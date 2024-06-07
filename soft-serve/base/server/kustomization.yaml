@@ -8,7 +8,12 @@ labels:
 - includeSelectors: true
   pairs:
     app.kubernetes.io/component: server
+configMapGenerator:
+- name: server
+  files:
+  - config.yaml
 resources:
 - deployment.yaml
 - service.yaml
+- certificate.yaml
 - persistentvolumeclaim.yaml

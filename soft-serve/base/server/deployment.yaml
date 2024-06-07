@@ -18,6 +18,11 @@ spec:
         volumeMounts:
         - name: soft-serve
           mountPath: /soft-serve
+        - name: config
+          mountPath: /soft-serve/config.yaml
+          subPath: config.yaml
+        - name: tls
+          mountPath: /etc/ssl/private
         resources:
           limits:
             memory: "128Mi"
@@ -49,6 +54,19 @@ spec:
       - name: soft-serve
         persistentVolumeClaim:
           claimName: data
+      - name: config
+        configMap:
+          name: server
+      - name: tls
+        secret:
+          secretName: server-tls
+          items:
+          - key: tls.key
+            path: soft-serve.key
+            mode: 0600
+          - key: tls.crt
+            path: soft-serve.crt
+            mode: 0600
       securityContext:
         seccompProfile:
           type: RuntimeDefault
