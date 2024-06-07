@@ -8,5 +8,5 @@ spec:
   prune: true
   sourceRef:
     kind: GitRepository
-    name: homelab
+    name: homelab-infra
   targetNamespace: cert-manager

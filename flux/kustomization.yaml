@@ -12,3 +12,6 @@ resources:
 - external-dns.helmrelease.yaml
 - core-data.gitrepository.yaml
 - dns.kustomization.yaml
+- jetstack.helmrepository.yaml
+- cert-manager.helmrelease.yaml
+- cert-manager.kustomization.yaml
