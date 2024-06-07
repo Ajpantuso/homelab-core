@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: meshcentral-web
+spec:
+  commonName: meshcentral.ajphome.com
+  secretName: web-tls
+  privateKey:
+    algorithm: RSA
+    size: 4096
+  issuerRef:
+    name: ca
+    kind: ClusterIssuer
+    group: cert-manager.io

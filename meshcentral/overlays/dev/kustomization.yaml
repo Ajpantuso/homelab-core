@@ -5,6 +5,7 @@ resources:
 - ../../base
 - ./namespace.yaml
 - ./meshcentral-web.persistentvolume.yaml
+- ./meshcentral-web.certificate.yaml
 patches:
 - path: ./service.patch.yaml
 - path: ./web.deployment.patch.yaml

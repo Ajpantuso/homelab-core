@@ -15,6 +15,12 @@ spec:
         - name: config
           mountPath: /opt/meshcentral/meshcentral-data/config.json
           subPath: config.json
+        - name: tls
+          mountPath: /opt/meshcentral/meshcentral-data/webserver-cert-private.key
+          subPath: webserver-cert-private.key
+        - name: tls
+          mountPath: /opt/meshcentral/meshcentral-data/webserver-cert-public.crt
+          subPath: webserver-cert-public.crt
         resources:
           limits:
             memory: "256Mi"
@@ -51,6 +57,16 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: web
+      - name: tls
+        secret:
+          secretName: web-tls
+          items:
+          - key: tls.key
+            path: webserver-cert-private.key
+            mode: 0540
+          - key: tls.crt
+            path: webserver-cert-public.crt 
+            mode: 0540
       securityContext:
         seccompProfile:
           type: RuntimeDefault

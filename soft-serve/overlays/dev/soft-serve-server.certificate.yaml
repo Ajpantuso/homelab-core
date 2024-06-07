@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: server-tls
+  name: soft-serve-server-tls
 spec:
   commonName: soft-serve.ajphome.com
   secretName: server-tls

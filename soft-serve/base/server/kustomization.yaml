@@ -15,5 +15,4 @@ configMapGenerator:
 resources:
 - deployment.yaml
 - service.yaml
-- certificate.yaml
 - persistentvolumeclaim.yaml
