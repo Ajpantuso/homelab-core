@@ -62,8 +62,8 @@ COREOS_INITRAMFS_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-live-initramfs.img'] | joi
 COREOS_ROOTFS_OUTPUT="{{ [env.PXE_COREOS_DIR, 'k0s-live-rootfs.img'] | join_path }}"
 FEDORA_KERNEL_OUTPUT="{{ [env.PXE_FEDORA_DIR, 'vmlinuz'] | join_path }}"
 FEDORA_INITRD_OUTPUT="{{ [env.PXE_FEDORA_DIR, 'initrd.img'] | join_path }}"
-PXE_IGNITION_PATH="{{ [env.PXE_COREOS_DIR, 'pxe.ign'] | join_path }}"
-PXE_BUTANE_PATH="{{ [config_root, 'ignition', 'pxe.bu'] | join_path }}"
+CORE_IGNITION_PATH="{{ [env.PXE_COREOS_DIR, 'core.ign'] | join_path }}"
+CORE_BUTANE_PATH="{{ [config_root, 'ignition', 'core.bu'] | join_path }}"
 
 # User Data
 LABADM_PASSWD=""
@@ -118,10 +118,6 @@ run = """
         ${K0SCTL_HOSTS} > ${K0SCTL_BASE_CONFIG_PATH}
     """
 
-[tasks."apply:pxe"]
-run="scp -i ${K0SCTL_IDENTITY_PATH} -Cr ${PXE_ROOT_DIR} ${K0SCTL_USERNAME}@core:/srv/www"
-depends = [ "coreos:generate:pxe", "hypervisor:generate:pxe" ]
-
 [tasks."coreos:generate:pxe"]
 run = """
     #!/usr/bin/env bash
@@ -162,11 +158,11 @@ EOF
     "${DOWNLOAD_FROM_URL}" "${FEDORA_INITRD_URL}" "${FEDORA_INITRD_OUTPUT}"
 """
 
-[tasks."pxe:arm:install"]
+[tasks."core:arm:install"]
 run = """
     sudo env PATH="${PATH}" coreos-installer install \
         -a aarch64 -s stable \
-        -i "${PXE_IGNITION_PATH}" \
+        -i "${CORE_IGNITION_PATH}" \
         --append-karg nomodeset "${ARM_INSTALL_DEVICE}"
 
     tmp="$(mktemp -d)"
@@ -225,12 +221,12 @@ depends = ["common:pre-gen:ignition"]
 [tasks."pxe:generate:ignition"]
 run = """
     #! /usr/bin/env bash
-    mkdir -p $(dirname ${PXE_IGNITION_PATH})
+    mkdir -p $(dirname ${CORE_IGNITION_PATH})
     internal \
     --pretty --strict \
     --files-dir ${DATA_DIR} \
-    < ${PXE_BUTANE_PATH} \
-    > ${PXE_IGNITION_PATH}
+    < ${CORE_BUTANE_PATH} \
+    > ${CORE_IGNITION_PATH}
     """
 depends = ["common:pre-gen:ignition"]
 

@@ -1,12 +1,14 @@
 # TODO
 
-- Rename PXE references to Core
+- Deploy Vault
+- Manage CA and SSH certs with Vault
+- Integrate cert-manager with Vault as external-issuer
 - Mount SSD on core server
 - Change PV hostpaths to mounted SSD
-- Migrate EDNS endpoints to soft-serve repo
+
+## References
+
 - https://github.com/charmbracelet/soft-serve
-- Automate Root CA generation and distribution of root.crt
-- Automate ssh CA generation and distribution of root.crt
-- Automate Hosting of ssh CA root.crt
-- Automate generation of user ssh key certs
-- Need a secret store
+- https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install
+- https://developer.hashicorp.com/vault/tutorials/secrets-management/pki-engine`
+- https://cert-manager.io/docs/configuration/vault/

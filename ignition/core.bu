@@ -29,24 +29,24 @@ storage:
       local: overlays/coreos/etc/sudoers.d/01_wheel
   - path: /etc/ansible/hosts
     contents:
-      local: overlays/pxe/etc/ansible/hosts
+      local: overlays/core/etc/ansible/hosts
   - path: /var/lib/tftpboot/ipxe-x86_64.efi
     contents:
-      local: overlays/pxe/var/lib/tftpboot/ipxe-x86_64.efi
+      local: overlays/core/var/lib/tftpboot/ipxe-x86_64.efi
   - path: /var/lib/tftpboot/undionly.kpxe
     contents:
-      local: overlays/pxe/var/lib/tftpboot/undionly.kpxe
+      local: overlays/core/var/lib/tftpboot/undionly.kpxe
   - path: /var/lib/tftpboot/menu/boot.ipxe
     contents:
-      local: overlays/pxe/var/lib/tftpboot/menu/boot.ipxe
+      local: overlays/core/var/lib/tftpboot/menu/boot.ipxe
 systemd:
   units:
   - name: rpm-ostree-install-extra.service
     enabled: true
-    contents_local: overlays/pxe/etc/systemd/system/rpm-ostree-install-extra.service
+    contents_local: overlays/core/etc/systemd/system/rpm-ostree-install-extra.service
   - name: nginx-setup.service
     enabled: true
-    contents_local: overlays/pxe/etc/systemd/system/nginx-setup.service
+    contents_local: overlays/core/etc/systemd/system/nginx-setup.service
   - name: ansible-pull.service
     enabled: false
     contents_local: overlays/coreos/etc/systemd/system/ansible-pull.service

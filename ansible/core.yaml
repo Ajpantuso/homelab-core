@@ -1,6 +1,6 @@
 ---
 - gather_facts: true
-  hosts: pxe
+  hosts: core
   roles:
   - role: common
-  - role: pxe-node
+  - role: core
