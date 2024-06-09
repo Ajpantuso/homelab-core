@@ -69,18 +69,9 @@ CORE_BUTANE_PATH="{{ [config_root, 'ignition', 'core.bu'] | join_path }}"
 LABADM_PASSWD=""
 LABADM_PUBLIC_KEY=""
 
-# DNS
-DNS_RECORDS_INPUT=""
-DNS_RECORDS_TEMPLATE="{{ [config_root, 'external-dns', 'dnsendpoints.mustache'] | join_path }}"
-DNS_RECORDS_DIR="{{ [config_root, 'external-dns'] | join_path }}"
-
-[tasks."apply:dns"]
-run = """
-    #!/usr/bin/env bash
-
-    mustache "${DNS_RECORDS_INPUT}" "${DNS_RECORDS_TEMPLATE}" "${DNS_RECORDS_DIR}/endpoints.yaml"
-    kubectl apply -k "${DNS_RECORDS_DIR}"
-"""
+[tasks."apply:pxe"]
+run="scp -i ${K0SCTL_IDENTITY_PATH} -Cr ${PXE_ROOT_DIR} ${K0SCTL_USERNAME}@core:/srv/www"
+depends = [ "coreos:generate:pxe", "hypervisor:generate:pxe" ]
 
 [tasks."k0s:apply"]
 run = "k0sctl apply -c ${K0SCTL_CONFIG_OUTPUT}"
@@ -242,7 +233,7 @@ run = """
         VOLUME /out
         CMD ["sh", "-c", "cp /usr/share/ipxe/{undionly.kpxe,ipxe-x86_64.efi,ipxe-i386.efi} /out"]
 EOF
-    ${CONTAINER_ENGINE} run --rm -v ${DATA_DIR}/overlays/pxe/var/lib/tftpboot:/out:z localhost/ipxe
+    ${CONTAINER_ENGINE} run --rm -v ${DATA_DIR}/overlays/core/var/lib/tftpboot:/out:z localhost/ipxe
 """
 
 [tasks."coreos:generate:iso"]
