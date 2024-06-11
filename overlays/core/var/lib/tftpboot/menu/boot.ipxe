@@ -5,6 +5,8 @@ menu PXE Boot Options
 item shell iPXE shell
 item fedora-coreos40-k0s-bm-net Fedora CoreOS 40 K0S Bare Metal
 item fedora-coreos40-k0s-vm-net Fedora CoreOS 40 K0S Virtual Machine
+item fedora-coreos40-core-net Fedora CoreOS 40 Core
+item fedora-coreos40-pki-net Fedora CoreOS 40 PKI
 item fedora-server40-hypervisor-net Fedora Server 40 Hypervisor
 item exit  Exit to BIOS
 
