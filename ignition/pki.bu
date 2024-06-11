@@ -12,14 +12,18 @@ passwd:
 storage:
   disks:
   - device: /dev/sda
+    wipe_table: true
     partitions:
-    - number: 1
+    - size_mib: 0
+      start_mib: 0
+      wipe_partition_entry: true
       label: vault
   filesystems:
     - path: /opt/vault
       device: /dev/disk/by-partlabel/vault
       format: xfs
       label: vault
+      wipe_filesystem: true
       with_mount_unit: true
   files:
   - path: /etc/zincati/config.d/51-rollout-wariness.toml
