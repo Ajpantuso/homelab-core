@@ -25,6 +25,18 @@ kernel ${BASEURL}/k0s-live-kernel initrd=main ignition.firstboot ignition.platfo
 initrd --name main ${BASEURL}/k0s-live-initramfs.img
 boot
 
+:fedora-coreos40-core-net
+set BASEURL http://pxe.ajphome.com/os/fedora/coreos/40.20240416.3.1/x86_64
+kernel ${BASEURL}/k0s-live-kernel initrd=main ignition.firstboot ignition.platform.id=metal coreos.live.rootfs_url=${BASEURL}/k0s-live-rootfs.img coreos.inst.install_dev=/dev/mmcblk0 coreos.inst.ignition_url=${BASEURL}/core.ign
+initrd --name main ${BASEURL}/k0s-live-initramfs.img
+boot
+
+:fedora-coreos40-pki-net
+set BASEURL http://pxe.ajphome.com/os/fedora/coreos/40.20240416.3.1/x86_64
+kernel ${BASEURL}/k0s-live-kernel initrd=main ignition.firstboot ignition.platform.id=metal coreos.live.rootfs_url=${BASEURL}/k0s-live-rootfs.img coreos.inst.install_dev=/dev/mmcblk0 coreos.inst.ignition_url=${BASEURL}/pki.ign
+initrd --name main ${BASEURL}/k0s-live-initramfs.img
+boot
+
 :fedora-server40-hypervisor-net
 set BASEURL http://pxe.ajphome.com/os/fedora/server/40/x86_64
 kernel ${BASEURL}/vmlinuz initrd=main inst.repo=https://download.fedoraproject.org/pub/fedora/linux/releases/40/Everything/x86_64/os/ ip=dhcp inst.ks=${BASEURL}/hypervisor.ks

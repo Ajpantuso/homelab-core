@@ -1,0 +1,54 @@
+variant: fcos
+version: 1.5.0
+passwd:
+  users:
+  - name: labadm
+    ssh_authorized_keys_local:
+    - labadm.pub
+    home_dir: /home/labadm
+    groups:
+    - wheel
+    shell: /bin/bash
+storage:
+  disks:
+  - device: /dev/sda
+    partitions:
+    - number: 1
+      label: vault
+  filesystems:
+    - path: /opt/vault
+      device: /dev/disk/by-partlabel/vault
+      format: xfs
+      label: vault
+      with_mount_unit: true
+  files:
+  - path: /etc/zincati/config.d/51-rollout-wariness.toml
+    contents:
+      local: overlays/coreos/etc/zincati/config.d/51-rollout-wariness.toml
+  - path: /etc/zincati/config.d/55-updates-strategy.toml
+    contents:
+      local: overlays/coreos/etc/zincati/config.d/55-updates-strategy.toml
+  - path: /etc/sudoers.d/01_wheel
+    mode: 0440
+    contents:
+      local: overlays/coreos/etc/sudoers.d/01_wheel
+  - path: /etc/ansible/hosts
+    contents:
+      local: overlays/pki/etc/ansible/hosts
+systemd:
+  units:
+  - name: rpm-ostree-install-extra.service
+    enabled: true
+    contents_local: overlays/core/etc/systemd/system/rpm-ostree-install-extra.service
+  - name: ansible-pull.service
+    enabled: false
+    contents_local: overlays/coreos/etc/systemd/system/ansible-pull.service
+  - name: ansible-pull.timer
+    enabled: true
+    contents_local: overlays/coreos/etc/systemd/system/ansible-pull.timer
+  - name: scheduled-reboot.service
+    enabled: false
+    contents_local: overlays/coreos/etc/systemd/system/scheduled-reboot.service
+  - name: scheduled-reboot.timer
+    enabled: true
+    contents_local: overlays/coreos/etc/systemd/system/scheduled-reboot.timer

@@ -1,6 +1,7 @@
 # TODO
 
 - Deploy Vault
+  - Add SSD to Second Zimaboard
 - Manage CA and SSH certs with Vault
 - Integrate cert-manager with Vault as external-issuer
 - Mount SSD on core server

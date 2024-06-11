@@ -64,6 +64,8 @@ FEDORA_KERNEL_OUTPUT="{{ [env.PXE_FEDORA_DIR, 'vmlinuz'] | join_path }}"
 FEDORA_INITRD_OUTPUT="{{ [env.PXE_FEDORA_DIR, 'initrd.img'] | join_path }}"
 CORE_IGNITION_PATH="{{ [env.PXE_COREOS_DIR, 'core.ign'] | join_path }}"
 CORE_BUTANE_PATH="{{ [config_root, 'ignition', 'core.bu'] | join_path }}"
+PKI_IGNITION_PATH="{{ [env.PXE_COREOS_DIR, 'pki.ign'] | join_path }}"
+PKI_BUTANE_PATH="{{ [config_root, 'ignition', 'pki.bu'] | join_path }}"
 
 # User Data
 LABADM_PASSWD=""
@@ -129,7 +131,7 @@ run = """
 
     chmod 0644 "${COREOS_INITRAMFS_OUTPUT}"
     """
-depends = ["k0s:generate:ignition", "pxe:generate:ignition"]
+depends = ["k0s:generate:ignition", "core:generate:ignition", "pki:generate:ignition"]
 
 [tasks."hypervisor:generate:pxe"]
 run = """
@@ -188,7 +190,7 @@ run = """
     rm -rf ${tmp}
     rm -rf ${mnt}
 """
-depends = ["pxe:generate:ignition"]
+depends = ["core:generate:ignition"]
 
 [tasks."k0s:generate:ignition"]
 run = """
@@ -209,7 +211,7 @@ run = """
     """
 depends = ["common:pre-gen:ignition"]
 
-[tasks."pxe:generate:ignition"]
+[tasks."core:generate:ignition"]
 run = """
     #! /usr/bin/env bash
     mkdir -p $(dirname ${CORE_IGNITION_PATH})
@@ -218,6 +220,18 @@ run = """
     --files-dir ${DATA_DIR} \
     < ${CORE_BUTANE_PATH} \
     > ${CORE_IGNITION_PATH}
+    """
+depends = ["common:pre-gen:ignition"]
+
+[tasks."pki:generate:ignition"]
+run = """
+    #! /usr/bin/env bash
+    mkdir -p $(dirname ${PKI_IGNITION_PATH})
+    internal \
+    --pretty --strict \
+    --files-dir ${DATA_DIR} \
+    < ${CORE_BUTANE_PATH} \
+    > ${PKI_IGNITION_PATH}
     """
 depends = ["common:pre-gen:ignition"]
 
