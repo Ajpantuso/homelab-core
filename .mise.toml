@@ -33,7 +33,7 @@ K0S_VM_BUTANE_PATH="{{ [config_root, 'ignition', 'k0s-vm.bu'] | join_path }}"
 # CoreOS image builder
 COREOS_ISO_PATH="{{ [env.TMP_DIR, 'coreos.iso'] | join_path }}"
 COREOS_ISO_OUTPUT="coreos.iso"
-COREOS_VERSION="40.20240416.3.1"
+COREOS_VERSION="40.20240519.3.0"
 TARGET_SYSTEM_ARCH="x86_64"
 COREOS_DOWNLOAD_URL="https://builds.coreos.fedoraproject.org/prod/streams/stable/builds/{{ env.COREOS_VERSION }}/{{ env.TARGET_SYSTEM_ARCH }}"
 COREOS_ISO_URL="{{ env.COREOS_DOWNLOAD_URL }}/fedora-coreos-{{ env.COREOS_VERSION }}-live.{{ env.TARGET_SYSTEM_ARCH }}.iso"
