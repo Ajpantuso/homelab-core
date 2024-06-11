@@ -230,7 +230,7 @@ run = """
     internal \
     --pretty --strict \
     --files-dir ${DATA_DIR} \
-    < ${CORE_BUTANE_PATH} \
+    < ${PKI_BUTANE_PATH} \
     > ${PKI_IGNITION_PATH}
     """
 depends = ["common:pre-gen:ignition"]
