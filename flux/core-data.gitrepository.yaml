@@ -4,6 +4,6 @@ metadata:
   name: core-data
 spec:
   interval: 5m
-  url: https://soft-serve.ajphome.com/core-data
+  url: ssh://soft-serve.ajphome.com/core-data.git
   ref:
     branch: main
