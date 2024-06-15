@@ -17,12 +17,12 @@ storage:
     - size_mib: 0
       start_mib: 0
       wipe_partition_entry: true
-      label: vault
+      label: ebs
   filesystems:
-    - path: /opt/vault
-      device: /dev/disk/by-partlabel/vault
+    - path: /var/openebs/local
+      device: /dev/disk/by-partlabel/ebs
       format: xfs
-      label: vault
+      label: ebs
       wipe_filesystem: true
       with_mount_unit: true
   files:
