@@ -4,7 +4,6 @@ namespace: soft-serve
 resources:
 - ../../base
 - ./namespace.yaml
-- ./soft-serve-server.persistentvolume.yaml
 - soft-serve-server.certificate.yaml
 patches:
 - path: ./service.patch.yaml
