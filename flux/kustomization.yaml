@@ -16,3 +16,5 @@ resources:
 - cert-manager.helmrelease.yaml
 - cert-manager.kustomization.yaml
 - soft-serve.kustomization.yaml
+- openebs.helmrepository.yaml
+- openebs.helmrelease.yaml
