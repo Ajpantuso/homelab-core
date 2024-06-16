@@ -4,6 +4,7 @@
 - Integrate cert-manager with Vault as external-issuer
 - Mount SSD on core server
 - Change PV hostpaths to mounted SSD (half done)
+- Embed coreos host ignition in PXE img and add extra steps to unique ignition files
 
 ## References
 
@@ -11,3 +12,4 @@
 - https://developer.hashicorp.com/vault/tutorials/getting-started/getting-started-install
 - https://developer.hashicorp.com/vault/tutorials/secrets-management/pki-engine`
 - https://cert-manager.io/docs/configuration/vault/
+- https://github.com/thecmdrunner/vfio-gpu-configs
