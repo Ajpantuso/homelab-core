@@ -2,6 +2,7 @@
 
 - Manage CA and SSH certs with Vault
 - Integrate cert-manager with Vault as external-issuer
+  - https://cert-manager.io/docs/configuration/vault/
 - Mount SSD on core server
 - Change PV hostpaths to mounted SSD (half done)
 - Embed coreos host ignition in PXE img and add extra steps to unique ignition files
