@@ -30,12 +30,12 @@ spec:
           containerPort: 443
         - name: bio
           containerPort: 4433
-        livenessProbe:
-          httpGet:
-            path: /health.ashx
-            scheme: HTTPS
-            port: https
-          initialDelaySeconds: 3
+        # livenessProbe:
+        #   httpGet:
+        #     path: /health.ashx
+        #     scheme: HTTPS
+        #     port: https
+        #   initialDelaySeconds: 3
         readinessProbe:
           httpGet:
             path: /health.ashx
@@ -65,7 +65,7 @@ spec:
             path: webserver-cert-private.key
             mode: 0540
           - key: tls.crt
-            path: webserver-cert-public.crt 
+            path: webserver-cert-public.crt
             mode: 0540
       securityContext:
         seccompProfile:
