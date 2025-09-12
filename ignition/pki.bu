@@ -36,6 +36,9 @@ storage:
     mode: 0440
     contents:
       local: overlays/coreos/etc/sudoers.d/01_wheel
+  - path: /etc/ssh/sshd_config.d/90-ssh-ca.conf
+    contents:
+      local: overlays/coreos/etc/ssh/sshd_config.d/90-ssh-ca.conf
   - path: /etc/ansible/hosts
     contents:
       local: overlays/pki/etc/ansible/hosts

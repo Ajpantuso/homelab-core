@@ -22,6 +22,9 @@
   - src: "{{ overlaysDir }}/coreos/etc/systemd/system/scheduled-reboot.timer"
     dest: /etc/systemd/system/scheduled-reboot.timer
     mode: 644
+  - src: "{{ overlaysDir }}/coreos/etc/ssh/sshd_config.d/90-ssh-ca.conf"
+    dest: /etc/ssh/sshd_config.d/90-ssh-ca.conf
+    mode: 644
 - name: Enable systemd services
   become: true
   ansible.builtin.systemd_service:
@@ -31,3 +34,10 @@
     daemon_reload: true
   loop:
   - name: scheduled-reboot.timer
+- name: Fetch SSH CA public key from Vault
+  become: true
+  ansible.builtin.uri:
+    url: "{{ vault_ssh_ca_url }}"
+    method: GET
+    dest: /etc/ssh/trusted-user-ca-keys.pem
+  notify: restart ssh
