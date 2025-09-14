@@ -1,5 +1,12 @@
-.mise.local.toml
 k0s/k0s.Cluster.yaml
 .cache
 coreos.iso
 external-dns/dnsendpoints.yaml
+
+# Environment files
+.env
+
+# Nix
+.direnv/
+result/
+*.drv
