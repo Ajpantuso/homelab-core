@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 name: "Soft Serve"
 log_format: "text"
 ssh:

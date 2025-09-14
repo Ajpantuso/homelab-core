@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 -include .env
 export
 
@@ -217,3 +221,7 @@ clean: ## Clean generated files
 	rm -rf $(CACHE_DIR)
 	rm -f $(COREOS_ISO_OUTPUT)
 .PHONY: clean
+
+reuse-apply:
+	reuse annotate --copyright NONE --license Unlicense -r "$(PROJECT_ROOT)" --fallback-dot-license
+.PHONY: reuse-apply

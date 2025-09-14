@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 [updates]
 strategy = "periodic"
 [[updates.periodic.window]]

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
 ---
 - import_tasks: coreos.yaml
   when: '"fedora-coreos" in ansible_proc_cmdline.ostree'
