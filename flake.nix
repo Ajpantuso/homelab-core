@@ -8,77 +8,17 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    coreos-installer.url = "github:ajpantuso/nix-coreos-installer";
+    pykickstart.url = "github:ajpantuso/nix-pykickstart";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, coreos-installer, pykickstart }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
-
-        pykickstart = pkgs.python3Packages.buildPythonPackage rec {
-          pname = "pykickstart";
-          version = "3.48";
-          pyproject = true;
-
-          src = pkgs.fetchPypi {
-            inherit pname version;
-            hash = "sha256-ycj22sf2RV0QHQFVLSZfEm3rSUfR4WtdhTpijK5x+Ek=";
-          };
-
-          build-system = with pkgs.python3Packages; [
-            setuptools
-          ];
-
-          dependencies = with pkgs.python3Packages; [
-            requests
-            six
-          ];
-
-          doCheck = false; # Skip tests for now
-
-          meta = with pkgs.lib; {
-            description = "Python library for manipulating kickstart files";
-            homepage = "https://github.com/pykickstart/pykickstart";
-            license = licenses.gpl2Plus;
-          };
-        };
-
-        coreos-installer = pkgs.rustPlatform.buildRustPackage rec {
-          pname = "coreos-installer";
-          version = "0.24.0";
-
-          src = pkgs.fetchCrate {
-            inherit pname version;
-            hash = "sha256-UPNP81cR4Fihm/w/1WOehSEQayZBm2oIqlZo0OlBaw0=";
-          };
-
-          cargoHash = "sha256-qGgFQy9tIwpG/+2YCq8CZbSmix+Heq1iOKrGmfh7QeM=";
-
-          nativeBuildInputs = with pkgs; [
-            pkg-config
-          ];
-
-          buildInputs = with pkgs; [
-            openssl
-            zstd
-            gnupg
-          ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
-            pkgs.darwin.apple_sdk.frameworks.Security
-          ];
-
-          doCheck = false;
-
-          meta = with pkgs.lib; {
-            description = "Installer for CoreOS disk images";
-            homepage = "https://github.com/coreos/coreos-installer";
-            license = licenses.asl20;
-            mainProgram = "coreos-installer";
-          };
-        };
-
       in
       {
         devShells.default = pkgs.mkShell {
@@ -86,7 +26,7 @@
             ansible
             bash
             butane
-            coreos-installer
+            coreos-installer.packages.${system}.default
             coreutils
             findutils
             git
@@ -97,7 +37,7 @@
             mo
             podman
             pre-commit
-            pykickstart
+            pykickstart.packages.${system}.default
             python3
             reuse
           ];
