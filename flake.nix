@@ -8,11 +8,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    coreos-installer.url = "github:ajpantuso/nix-coreos-installer";
-    pykickstart.url = "github:ajpantuso/nix-pykickstart";
   };
 
-  outputs = { self, nixpkgs, flake-utils, coreos-installer, pykickstart }:
+  outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
@@ -23,10 +21,7 @@
       {
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
-            ansible
             bash
-            butane
-            coreos-installer.packages.${system}.default
             coreutils
             findutils
             git
@@ -34,11 +29,8 @@
             k0sctl
             kubectl
             kustomize
-            mo
             podman
             pre-commit
-            pykickstart.packages.${system}.default
-            python3
             reuse
           ];
 

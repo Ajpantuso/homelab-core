@@ -70,35 +70,6 @@ make k0s-config
 make flux-apply
 ```
 
-### CoreOS Image Generation
-```bash
-# Generate all CoreOS PXE boot artifacts
-make coreos-generate-pxe
-
-# Generate hypervisor PXE artifacts
-make hypervisor-generate-pxe
-
-# Generate ignition files for different node types
-make core-generate-ignition
-make k0s-generate-ignition
-make pki-generate-ignition
-
-# Generate bootable CoreOS ISO
-make coreos-generate-iso
-```
-
-### Infrastructure Deployment
-```bash
-# Apply PXE configuration to core server
-make apply-pxe
-
-# Install CoreOS on ARM device
-make core-arm-install
-
-# Clean all generated artifacts
-make clean
-```
-
 ## Development Patterns
 
 ### Flux CD GitOps Workflow
@@ -110,13 +81,6 @@ make clean
 ### Version Management
 - Helm chart versions use wildcard patterns (e.g., `1.19.*`) for automatic patch updates
 - Container images are pinned to specific tags in HelmRelease values
-- CoreOS version is pinned in Makefile variables (`COREOS_VERSION`)
-
-### Configuration Management
-- Butane files (`.bu`) generate Ignition files for CoreOS configuration
-- File system overlays in `overlays/` are embedded into CoreOS images
-- Ansible playbooks handle post-boot configuration and k0s cluster management
-- Environment variables are configured via `.env` file (git-ignored)
 
 ### Infrastructure as Code Structure
 - Each service follows kustomize base/overlay pattern
