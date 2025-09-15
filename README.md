@@ -11,7 +11,8 @@ SPDX-License-Identifier: Unlicense
   - https://cert-manager.io/docs/configuration/vault/
 - Mount SSD on core server
 - Change PV hostpaths to mounted SSD (half done)
-- Embed coreos host ignition in PXE img and add extra steps to unique ignition files
+- Look into migrating to https://github.com/minio/directpv
+- New cluster to run Minio for backups and general object storage
 
 ## References
 
