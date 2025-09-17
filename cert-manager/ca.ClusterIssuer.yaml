@@ -7,5 +7,12 @@ kind: ClusterIssuer
 metadata:
   name: ca
 spec:
-  ca:
-    secretName: ca-root
+  vault:
+    server: https://vault.ajphome.com
+    path: home/v1/ica1/v1/sign/cert-manager
+    caBundleSecretRef:
+      name: vault-ca
+    auth:
+      tokenSecretRef:
+        name: vault-token
+        key: token

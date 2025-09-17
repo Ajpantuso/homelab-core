@@ -8,6 +8,8 @@ metadata:
   name: soft-serve-server-tls
 spec:
   commonName: soft-serve.ajphome.com
+  dnsNames:
+  - soft-serve.ajphome.com
   secretName: server-tls
   privateKey:
     algorithm: RSA

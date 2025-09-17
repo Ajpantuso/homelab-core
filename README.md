@@ -6,10 +6,6 @@ SPDX-License-Identifier: Unlicense
 
 # TODO
 
-- Manage CA and SSH certs with Vault
-- Integrate cert-manager with Vault as external-issuer
-  - https://cert-manager.io/docs/configuration/vault/
-- Mount SSD on core server
 - Change PV hostpaths to mounted SSD (half done)
 - Look into migrating to https://github.com/minio/directpv
 - New cluster to run Minio for backups and general object storage

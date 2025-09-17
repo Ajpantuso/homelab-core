@@ -5,6 +5,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- ./ca-bootstrap.ClusterIssuer.yaml
-- ./ca-root.Certificate.yaml
 - ./ca.ClusterIssuer.yaml
+- ./cert-manager-auth-delegator.clusterrolebinding.yaml
+- ./token-creator.role.yaml
+- ./cert-manager-token-creator.rolebinding.yaml

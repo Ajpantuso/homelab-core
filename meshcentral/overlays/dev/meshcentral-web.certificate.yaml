@@ -8,6 +8,8 @@ metadata:
   name: meshcentral-web
 spec:
   commonName: meshcentral.ajphome.com
+  dnsNames:
+  - meshcentral.ajphome.com
   secretName: web-tls
   privateKey:
     algorithm: RSA
