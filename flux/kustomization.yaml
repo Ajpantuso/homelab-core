@@ -24,3 +24,5 @@ resources:
 - openebs.helmrelease.yaml
 - haproxytech.helmrepository.yaml
 - haproxy.helmrelease.yaml
+- phntom.helmrepository.yaml
+- docker-registry.helmrelease.yaml
