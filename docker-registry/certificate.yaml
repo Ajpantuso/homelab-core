@@ -12,5 +12,6 @@ spec:
   issuerRef:
     name: ca
     kind: ClusterIssuer
+  commonName: registry.ajphome.com
   dnsNames:
   - registry.ajphome.com
