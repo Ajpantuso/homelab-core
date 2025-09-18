@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: docker-registry
+spec:
+  interval: 10m
+  path: "./docker-registry"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: homelab-infra

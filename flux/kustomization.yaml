@@ -26,3 +26,4 @@ resources:
 - haproxy.helmrelease.yaml
 - phntom.helmrepository.yaml
 - docker-registry.helmrelease.yaml
+- docker-registry.kustomization.yaml
