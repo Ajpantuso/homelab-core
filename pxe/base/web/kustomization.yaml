@@ -6,8 +6,8 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: web
-  newName: registry.access.redhat.com/ubi9/nginx-126
-  newTag: 1-1756959223
+  newName: registry.ajphome.com:5000/pxe-http
+  newTag: latest
 labels:
 - includeSelectors: true
   pairs:
@@ -15,4 +15,3 @@ labels:
 resources:
 - deployment.yaml
 - service.yaml
-- persistentvolumeclaim.yaml

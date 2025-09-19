@@ -18,9 +18,6 @@ spec:
         - "nginx"
         - "-g"
         - "daemon off;"
-        volumeMounts:
-        - name: data
-          mountPath: /opt/app-root/src
         resources:
           limits:
             memory: "128Mi"
@@ -36,7 +33,3 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
-      volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: web

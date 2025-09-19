@@ -8,11 +8,6 @@ namespace: pxe
 resources:
 - ../../base
 - ./namespace.yaml
-- ./pxe-tftp.persistentvolume.yaml
-- ./pxe-web.persistentvolume.yaml
-- ./storageclass.yaml
 patches:
 - path: ./tftp.service.patch.yaml
-- path: ./tftp.deployment.patch.yaml
 - path: ./web.service.patch.yaml
-- path: ./web.deployment.patch.yaml

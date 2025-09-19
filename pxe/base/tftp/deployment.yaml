@@ -13,12 +13,6 @@ spec:
       containers:
       - name: tftp
         image: tftp
-        volumeMounts:
-        - name: tftp
-          mountPath: /var/lib/tftpboot
-        - name: config
-          mountPath: /etc/dnsmasq.conf
-          subPath: dnsmasq.conf
         resources:
           limits:
             memory: "256Mi"
@@ -38,10 +32,3 @@ spec:
       securityContext:
         seccompProfile:
           type: RuntimeDefault
-      volumes:
-      - name: tftp
-        persistentVolumeClaim:
-          claimName: tftp
-      - name: config
-        configMap:
-          name: tftp
