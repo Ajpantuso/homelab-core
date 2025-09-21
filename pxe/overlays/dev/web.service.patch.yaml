@@ -7,6 +7,5 @@ kind: Service
 metadata:
   name: web
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.0.0.202
     metallb.universe.tf/allow-shared-ip: "pxe"
     external-dns.alpha.kubernetes.io/hostname: pxe.ajphome.com.

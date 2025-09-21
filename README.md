@@ -6,7 +6,6 @@ SPDX-License-Identifier: Unlicense
 
 # TODO
 
-- Change PV hostpaths to mounted SSD (half done)
 - Look into migrating to https://github.com/minio/directpv
 - New cluster to run Minio for backups and general object storage
 

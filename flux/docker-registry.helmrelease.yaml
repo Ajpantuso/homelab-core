@@ -29,7 +29,6 @@ spec:
       port: 5000
       annotations:
         external-dns.alpha.kubernetes.io/hostname: registry.ajphome.com
-        metallb.universe.tf/loadBalancerIPs: 10.0.0.205
     ingress:
       enabled: false
     resources:
