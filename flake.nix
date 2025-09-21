@@ -38,10 +38,6 @@
             export PROJECT_ROOT="$(git rev-parse --show-toplevel)";
             export CACHE_DIR="$PROJECT_ROOT/.cache";
             mkdir -p "$CACHE_DIR";
-            export KUBECONFIG="$CACHE_DIR/.kube/config";
-
-            echo "Homelab infrastructure development environment loaded"
-            echo "Project root: $PROJECT_ROOT"
           '';
         };
       });

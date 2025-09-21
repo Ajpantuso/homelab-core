@@ -27,3 +27,4 @@ resources:
 - phntom.helmrepository.yaml
 - docker-registry.helmrelease.yaml
 - docker-registry.kustomization.yaml
+- rbac.kustomization.yaml
