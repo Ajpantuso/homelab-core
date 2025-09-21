@@ -9,6 +9,7 @@ SPDX-License-Identifier: Unlicense
 - Look into migrating to https://github.com/minio/directpv
 - New cluster to run Minio for backups and general object storage
 - Use declarative config via [Ansible](https://ansible-opnsense.oxl.app/) to manage Opnsense
+- look into https://github.com/k0sproject/k0smotron
 
 ## References
 
