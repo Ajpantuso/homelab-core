@@ -10,9 +10,8 @@ spec:
   channel: stable
   updateServer: https://updates.k0sproject.io/
   upgradeStrategy:
-    type: Periodic
+    type: periodic
     periodic:
       days:
       - Wednesday
       startTime: "17:00"
-      timezone: "UTC"
