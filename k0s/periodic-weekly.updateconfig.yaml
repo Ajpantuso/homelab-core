@@ -9,7 +9,7 @@ metadata:
 spec:
   channel: stable
   updateServer: https://updates.k0sproject.io/
-  updateStrategy:
+  upgradeStrategy:
     type: Periodic
     periodic:
       days:
