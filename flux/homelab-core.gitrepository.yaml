@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: homelab-core
+spec:
+  interval: 5m
+  url: https://github.com/ajpantuso/homelab-core
+  ref:
+    branch: main
