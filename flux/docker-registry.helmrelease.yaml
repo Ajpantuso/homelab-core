@@ -23,7 +23,6 @@ spec:
     persistence:
       enabled: true
       size: 50Gi
-      storageClass: openebs-hostpath
     service:
       type: LoadBalancer
       port: 5000
