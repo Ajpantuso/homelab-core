@@ -23,6 +23,7 @@ resources:
 - haproxytech.helmrepository.yaml
 - haproxy.helmrelease.yaml
 - phntom.helmrepository.yaml
-- docker-registry.helmrelease.yaml
-- docker-registry.kustomization.yaml
+- project-zot.helmrepository.yaml
+- zot.helmrelease.yaml
+- zot.kustomization.yaml
 - rbac.kustomization.yaml

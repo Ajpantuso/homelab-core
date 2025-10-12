@@ -1,0 +1,66 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: zot
+spec:
+  targetNamespace: zot
+  install:
+    createNamespace: true
+  interval: 10m
+  chart:
+    spec:
+      chart: zot
+      version: "*"
+      sourceRef:
+        kind: HelmRepository
+        name: project-zot
+  values:
+    mountConfig: true
+    configFiles:
+      config.json: |-
+        {
+          "storage": {
+            "rootDirectory": "/var/lib/registry"
+          },
+          "http": {
+            "address": "0.0.0.0",
+            "port": "5000",
+            "tls": {
+              "cert": "/etc/zot/certs/tls.crt",
+              "key": "/etc/zot/certs/tls.key"
+            }
+          },
+          "log": {
+            "level": "info"
+          }
+        }
+    httpGet:
+      scheme: HTTPS
+    persistence: true
+    pvc:
+      create: true
+      size: 50Gi
+    extraVolumes:
+      - name: zot-tls
+        secret:
+          secretName: zot-tls
+    extraVolumeMounts:
+      - name: zot-tls
+        mountPath: /etc/zot/certs
+        readOnly: true
+    service:
+      type: LoadBalancer
+      port: 5000
+      annotations:
+        external-dns.alpha.kubernetes.io/hostname: registry.ajphome.com
+    resources:
+      limits:
+        cpu: 100m
+        memory: 256Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi

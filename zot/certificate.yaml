@@ -5,10 +5,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: docker-registry-tls
-  namespace: docker-registry
+  name: zot-tls
+  namespace: zot
 spec:
-  secretName: docker-registry-tls
+  secretName: zot-tls
   issuerRef:
     name: ca
     kind: ClusterIssuer

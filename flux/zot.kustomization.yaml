@@ -5,10 +5,10 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: docker-registry
+  name: zot
 spec:
   interval: 10m
-  path: "./docker-registry"
+  path: "./zot"
   prune: true
   sourceRef:
     kind: GitRepository
