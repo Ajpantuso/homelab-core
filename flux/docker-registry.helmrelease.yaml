@@ -22,7 +22,7 @@ spec:
     tlsSecretName: docker-registry-tls
     persistence:
       enabled: true
-      size: 10Gi
+      size: 50Gi
       storageClass: openebs-hostpath
     service:
       type: LoadBalancer
