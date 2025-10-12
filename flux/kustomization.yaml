@@ -22,7 +22,6 @@ resources:
 - soft-serve.kustomization.yaml
 - haproxytech.helmrepository.yaml
 - haproxy.helmrelease.yaml
-- phntom.helmrepository.yaml
 - project-zot.helmrepository.yaml
 - zot.helmrelease.yaml
 - zot.kustomization.yaml

@@ -8,4 +8,4 @@ metadata:
   name: default
 spec:
   addresses:
-  - 10.0.30.2-10.0.30.254
+  - 10.0.0.240 - 10.0.0.245
