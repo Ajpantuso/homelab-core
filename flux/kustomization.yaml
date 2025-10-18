@@ -26,3 +26,5 @@ resources:
 - zot.helmrelease.yaml
 - zot.kustomization.yaml
 - rbac.kustomization.yaml
+- directpv.gitrepository.yaml
+- directpv.kustomization.yaml
