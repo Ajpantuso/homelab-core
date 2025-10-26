@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: helm-controller
+  namespace: flux-system
+spec:
+  selector:
+    app: helm-controller
+  ports:
+  - name: http-prom
+    port: 8080
+    protocol: TCP
+    targetPort: http-prom

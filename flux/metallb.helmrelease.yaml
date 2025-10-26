@@ -18,3 +18,22 @@ spec:
         kind: HelmRepository
         name: metallb
   interval: 10m
+  values:
+    prometheus:
+      serviceMonitor:
+        enabled: true
+        jobLabel: app.kubernetes.io/name
+      serviceAccount:
+        create: true
+      rbacProxy:
+        enabled: false
+    controller:
+      serviceMonitor:
+        enabled: true
+      metrics:
+        enabled: true
+    speaker:
+      serviceMonitor:
+        enabled: true
+      metrics:
+        enabled: true

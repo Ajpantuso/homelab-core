@@ -6,6 +6,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: flux-system
 resources:
+- helm-controller.service.yaml
+- kustomize-controller.service.yaml
+- image-reflector-controller.service.yaml
+- image-automation-controller.service.yaml
 - source-controller.servicemonitor.yaml
 - kustomize-controller.servicemonitor.yaml
 - helm-controller.servicemonitor.yaml

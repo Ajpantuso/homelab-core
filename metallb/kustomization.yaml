@@ -8,4 +8,3 @@ namespace: metallb-system
 resources:
 - default.IPAddressPool.yaml
 - default.L2Advertisement.yaml
-- metallb-servicemonitor.yaml
