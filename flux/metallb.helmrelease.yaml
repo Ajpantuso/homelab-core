@@ -25,19 +25,17 @@ spec:
       serviceMonitor:
         enabled: true
         jobLabel: app.kubernetes.io/name
+        controller:
+          additionalLabels:
+            release: monitoring-kube-prometheus-stack
+        speaker:
+          additionalLabels:
+            release: monitoring-kube-prometheus-stack
       rbacProxy:
         enabled: false
     controller:
-      serviceMonitor:
-        enabled: true
-        labels:
-          release: monitoring-kube-prometheus-stack
       metrics:
         enabled: true
     speaker:
-      serviceMonitor:
-        enabled: true
-        labels:
-          release: monitoring-kube-prometheus-stack
       metrics:
         enabled: true
