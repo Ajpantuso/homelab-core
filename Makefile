@@ -18,8 +18,12 @@ help: ## Show this help message
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z0-9_-]+:.*?## / {printf "  %-20s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 .PHONY: help
 
-flux-apply: ## Apply Flux configuration
-	kubectl apply -k flux
+flux-apply:
+	kubectl apply -k flux --prune --all \
+	--prune-allowlist=source.toolkit.fluxcd.io/v1/gitrepository \
+	--prune-allowlist=source.toolkit.fluxcd.io/v1beta2/helmrepository \
+	--prune-allowlist=helm.toolkit.fluxcd.io/v2beta2/helmrelease \
+	--prune-allowlist=kustomize.toolkit.fluxcd.io/v1/kustomization
 .PHONY: flux-apply
 
 update-k0s-version:
