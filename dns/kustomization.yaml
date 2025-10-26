@@ -4,8 +4,6 @@
 
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: metallb-system
+namespace: external-dns
 resources:
-- default.IPAddressPool.yaml
-- default.L2Advertisement.yaml
-- metallb-servicemonitor.yaml
+- external-dns-servicemonitor.yaml

@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: flux-image-automation-controller
+  namespace: monitoring
+  labels:
+    release: monitoring-kube-prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: image-automation-controller
+  namespaceSelector:
+    matchNames:
+    - flux-system
+  endpoints:
+  - port: http-prom
+    interval: 30s
+    scrapeTimeout: 10s
+    path: /metrics

@@ -31,3 +31,6 @@ resources:
 - prometheus-community.helmrepository.yaml
 - prometheus.helmrelease.yaml
 - prometheus.kustomization.yaml
+- dns-servicemonitor.kustomization.yaml
+- haproxy-servicemonitor.kustomization.yaml
+- flux-system-servicemonitor.kustomization.yaml
