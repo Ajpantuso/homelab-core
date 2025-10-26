@@ -20,20 +20,21 @@ spec:
   interval: 10m0s
   values:
     prometheus:
-      ingress:
-        enabled: true
-        annotations:
-          external-dns.alpha.kubernetes.io/hostname: prometheus.ajphome.com.
-        hosts:
-        - prometheus.ajphome.com
-        tls:
-        - secretName: prometheus-tls
-          hosts:
-          - prometheus.ajphome.com
       service:
         type: LoadBalancer
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: prometheus.core.ajphome.com.
       prometheusSpec:
         retention: 30d
+        web:
+          tlsConfig:
+            cert:
+              secret:
+                name: prometheus-tls
+                key: tls.crt
+            keySecret:
+              name: prometheus-tls
+              key: tls.key
         storageSpec:
           volumeClaimTemplate:
             spec:

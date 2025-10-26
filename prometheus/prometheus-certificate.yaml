@@ -12,6 +12,6 @@ spec:
   issuerRef:
     name: ca
     kind: ClusterIssuer
-  commonName: prometheus.ajphome.com
+  commonName: prometheus.core.ajphome.com
   dnsNames:
-  - prometheus.ajphome.com
+  - prometheus.core.ajphome.com
