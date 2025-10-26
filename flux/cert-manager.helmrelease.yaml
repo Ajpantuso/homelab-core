@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Unlicense
 
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: cert-manager
@@ -10,8 +10,6 @@ spec:
   targetNamespace: cert-manager
   install:
     createNamespace: true
-    namespaceLabels:
-      monitoring: "true"
   chart:
     spec:
       chart: cert-manager

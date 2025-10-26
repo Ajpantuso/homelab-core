@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: Unlicense
 
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: external-dns
@@ -10,8 +10,6 @@ spec:
   targetNamespace: external-dns
   install:
     createNamespace: true
-    namespaceLabels:
-      monitoring: "true"
   interval: 10m
   chart:
     spec:
