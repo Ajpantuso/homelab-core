@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+spec:
+  targetNamespace: monitoring
+  install:
+    createNamespace: true
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      version: 67.*
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  interval: 10m0s
+  values:
+    prometheus:
+      ingress:
+        enabled: true
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: prometheus.ajphome.com.
+        hosts:
+        - prometheus.ajphome.com
+        tls:
+        - secretName: prometheus-tls
+          hosts:
+          - prometheus.ajphome.com
+      service:
+        type: LoadBalancer
+      prometheusSpec:
+        retention: 30d
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              accessModes: ["ReadWriteOnce"]
+              resources:
+                requests:
+                  storage: 50Gi
+    grafana:
+      enabled: false
+    alertmanager:
+      enabled: false

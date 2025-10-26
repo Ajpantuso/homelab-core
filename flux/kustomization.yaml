@@ -28,3 +28,6 @@ resources:
 - rbac.kustomization.yaml
 - directpv.gitrepository.yaml
 - directpv.kustomization.yaml
+- prometheus-community.helmrepository.yaml
+- prometheus.helmrelease.yaml
+- prometheus.kustomization.yaml
