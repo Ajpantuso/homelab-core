@@ -20,6 +20,8 @@ spec:
   interval: 10m
   values:
     prometheus:
+      namespace: monitoring
+      serviceAccount: kube-prometheus-stack-prometheus
       serviceMonitor:
         enabled: true
         jobLabel: app.kubernetes.io/name
@@ -28,10 +30,14 @@ spec:
     controller:
       serviceMonitor:
         enabled: true
+        labels:
+          release: monitoring-kube-prometheus-stack
       metrics:
         enabled: true
     speaker:
       serviceMonitor:
         enabled: true
+        labels:
+          release: monitoring-kube-prometheus-stack
       metrics:
         enabled: true
