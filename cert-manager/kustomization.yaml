@@ -9,4 +9,4 @@ resources:
 - ./cert-manager-auth-delegator.clusterrolebinding.yaml
 - ./token-creator.role.yaml
 - ./cert-manager-token-creator.rolebinding.yaml
-- ./cert-manager-servicemonitor.yaml
+- ./cert-manager.servicemonitor.yaml

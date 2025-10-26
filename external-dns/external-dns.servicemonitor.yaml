@@ -5,17 +5,16 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: flux-source-controller
-  namespace: monitoring
+  name: external-dns
   labels:
     release: monitoring-kube-prometheus-stack
 spec:
   selector:
     matchLabels:
-      app: source-controller
+      app.kubernetes.io/name: external-dns
   namespaceSelector:
     matchNames:
-    - flux-system
+    - external-dns
   endpoints:
   - port: http
     interval: 30s

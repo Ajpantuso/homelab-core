@@ -5,14 +5,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: dns-servicemonitor
+  name: flux-system
 spec:
   interval: 10m0s
-  path: ./dns
+  path: ./flux-system
   prune: true
   sourceRef:
     kind: GitRepository
     name: homelab-core
-  targetNamespace: monitoring
   dependsOn:
   - name: prometheus
+  targetNamespace: flux-system

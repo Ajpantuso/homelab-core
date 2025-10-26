@@ -15,7 +15,7 @@ resources:
 - external-dns.helmrepository.yaml
 - external-dns.helmrelease.yaml
 - core-data.gitrepository.yaml
-- dns.kustomization.yaml
+- external-dns.kustomization.yaml
 - jetstack.helmrepository.yaml
 - cert-manager.helmrelease.yaml
 - cert-manager.kustomization.yaml
@@ -30,4 +30,4 @@ resources:
 - prometheus.helmrelease.yaml
 - prometheus.kustomization.yaml
 - dns-servicemonitor.kustomization.yaml
-- flux-system-servicemonitor.kustomization.yaml
+- flux-system.kustomization.yaml

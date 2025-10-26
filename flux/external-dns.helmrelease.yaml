@@ -10,6 +10,8 @@ spec:
   targetNamespace: external-dns
   install:
     createNamespace: true
+    namespaceLabels:
+      monitoring: "true"
   interval: 10m
   chart:
     spec:

@@ -1,0 +1,10 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flux-system
+  labels:
+    monitoring: "true"

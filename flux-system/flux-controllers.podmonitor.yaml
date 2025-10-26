@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: flux-controllers
+  namespace: flux-system
+  labels:
+    release: monitoring-kube-prometheus-stack
+spec:
+  selector:
+    matchExpressions:
+    - key: app
+      operator: In
+      values:
+      - source-controller
+      - kustomize-controller
+      - helm-controller
+      - notification-controller
+      - image-reflector-controller
+      - image-automation-controller
+  podMetricsEndpoints:
+  - port: http-prom
+    interval: 30s
+    scrapeTimeout: 10s
+    path: /metrics

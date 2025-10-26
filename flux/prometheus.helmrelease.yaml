@@ -25,6 +25,12 @@ spec:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: prometheus.core.ajphome.com.
       prometheusSpec:
+        serviceMonitorNamespaceSelector:
+          matchLabels:
+            monitoring: "true"
+        podMonitorNamespaceSelector:
+          matchLabels:
+            monitoring: "true"
         retention: 30d
         web:
           tlsConfig:

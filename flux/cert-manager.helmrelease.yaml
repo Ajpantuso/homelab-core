@@ -10,6 +10,8 @@ spec:
   targetNamespace: cert-manager
   install:
     createNamespace: true
+    namespaceLabels:
+      monitoring: "true"
   chart:
     spec:
       chart: cert-manager
