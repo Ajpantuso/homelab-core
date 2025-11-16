@@ -38,7 +38,18 @@
           shellHook = ''
             export PROJECT_ROOT="$(git rev-parse --show-toplevel)";
 
-            kubectl config use-context core
+              # Check if 'core' context exists, if not create it
+            if ! kubectl config get-contexts | grep -q "core"; then
+              kubectl config set-cluster core --server=https://core.ajphome.com:6443 --insecure-skip-tls-verify=true
+              kubectl config set-context core --cluster=core --user=ajpantuso@gmail.com
+            fi
+
+            # Test connectivity to the cluster
+            if kubectl cluster-info --context=core &>/dev/null; then
+              kubectl config use-context core
+            else
+              echo "Warning: Could not connect to core cluster at https://core.ajphome.com:6443"
+            fi
           '';
         };
       });
