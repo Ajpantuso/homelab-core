@@ -58,9 +58,6 @@ spec:
       prometheus:
         monitor:
           enabled: true
-      securityContext:
-        privileged: true
-        runAsUser: 0
     grafana:
       enabled: false
     alertmanager:
