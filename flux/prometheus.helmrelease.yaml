@@ -58,8 +58,6 @@ spec:
       prometheus:
         monitor:
           enabled: true
-          additionalLabels:
-            release: monitoring-kube-prometheus-stack
       securityContext:
         privileged: true
         runAsUser: 0
