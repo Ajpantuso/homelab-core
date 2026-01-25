@@ -8,5 +8,6 @@ metadata:
   name: monitoring
   labels:
     monitoring: "true"
-    pod-security.kubernetes.io/enforce: baseline
-    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/warn: privileged
