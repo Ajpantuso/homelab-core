@@ -48,6 +48,21 @@ spec:
               resources:
                 requests:
                   storage: 50Gi
+    prometheus-node-exporter:
+      enabled: true
+      hostNetwork: true
+      hostPID: true
+      extraArgs:
+        - --collector.systemd
+        - --collector.systemd.unit-include=".+(service|socket|target)$"
+      prometheus:
+        monitor:
+          enabled: true
+          additionalLabels:
+            release: monitoring-kube-prometheus-stack
+      securityContext:
+        privileged: true
+        runAsUser: 0
     grafana:
       enabled: false
     alertmanager:
