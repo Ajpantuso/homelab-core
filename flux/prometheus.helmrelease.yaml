@@ -52,9 +52,6 @@ spec:
       enabled: true
       hostNetwork: true
       hostPID: true
-      extraArgs:
-        - --collector.systemd
-        - --collector.systemd.unit-include=".+(service|socket|target)$"
       prometheus:
         monitor:
           enabled: true

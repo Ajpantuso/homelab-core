@@ -1,0 +1,59 @@
+# SPDX-FileCopyrightText: 2025 NONE
+#
+# SPDX-License-Identifier: Unlicense
+
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: prometheus-systemd-exporter
+spec:
+  targetNamespace: monitoring
+  install:
+    createNamespace: false  # Namespace already exists
+  chart:
+    spec:
+      chart: prometheus-systemd-exporter
+      version: 0.5.*
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+  interval: 10m0s
+  values:
+    # Enable ServiceMonitor for automatic Prometheus scraping
+    prometheus:
+      monitor:
+        enabled: true
+        additionalLabels:
+          monitoring: "true"
+
+    # Configure which systemd units to monitor
+    config:
+      systemd:
+        collector:
+          unitInclude:
+            # Match services, sockets, and targets (same as previous attempt)
+            - '.+(service|socket|target)$'
+
+    # Required for systemd access
+    hostNetwork: true
+    hostPID: true
+
+    # Mount D-Bus socket for systemd communication
+    extraVolumeMounts:
+      - mountPath: /var/run/dbus/system_bus_socket
+        name: dbus-socket
+        readOnly: true
+
+    extraVolumes:
+      - name: dbus-socket
+        hostPath:
+          path: /var/run/dbus/system_bus_socket
+          type: Socket
+
+    # Security context - may need root for D-Bus access
+    # Try non-root first, escalate if needed
+    securityContext:
+      fsGroup: 65534
+      runAsGroup: 65534
+      runAsNonRoot: true
+      runAsUser: 65534

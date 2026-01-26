@@ -28,5 +28,6 @@ resources:
 - directpv.kustomization.yaml
 - prometheus-community.helmrepository.yaml
 - prometheus.helmrelease.yaml
+- prometheus-systemd-exporter.helmrelease.yaml
 - prometheus.kustomization.yaml
 - flux-system.kustomization.yaml
