@@ -25,6 +25,7 @@ spec:
         enabled: true
         additionalLabels:
           monitoring: "true"
+          release: monitoring-kube-prometheus-stack
 
     # Configure which systemd units to monitor
     config:
