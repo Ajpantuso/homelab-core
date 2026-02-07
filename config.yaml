@@ -1,6 +1,6 @@
 repo: Ajpantuso/homelab-core
 k0s:
-  version: v1.33.4+k0s.0
+  version: v1.34.3+k0s.0
   config_path: /k0s/core.clusterconfig.yaml.j2
 oidc:
   config_url: http://srv-001.ajphome.com/pki/k0s-core-oidc.yaml
