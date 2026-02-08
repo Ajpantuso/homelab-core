@@ -13,7 +13,7 @@ spec:
   chart:
     spec:
       chart: prometheus-systemd-exporter
-      version: 0.5.*
+      version: 0.5.2
       sourceRef:
         kind: HelmRepository
         name: prometheus-community
